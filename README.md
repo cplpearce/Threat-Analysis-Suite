@@ -19,6 +19,6 @@ Electron?
 PostSQL || SQLite?
 
 # JS Libraries
-Turf.js           | https://www.npmjs.com/package/@turf/turf
-OpenLayers.js     | https://openlayers.org/
-Leaflet Heatmap   | http://leaflet.github.io/Leaflet.heat/demo/
+* Turf.js           | https://www.npmjs.com/package/@turf/turf
+* OpenLayers.js     | https://openlayers.org/
+* Leaflet Heatmap   | http://leaflet.github.io/Leaflet.heat/demo/
