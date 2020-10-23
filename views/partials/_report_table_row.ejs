@@ -27,13 +27,13 @@
     <%= report.actor2_assoc.toUpperCase() || "None" %>
   </td>
   <td class="title-case">
-    <%= report.country %>
+    <%= report.country.toUpperCase() %>
   </td>
   <td class="title-case">
-    <%= report.admin1 %>
+    <%= report.admin1.toUpperCase() %>
   </td>
   <td class="title-case">
-    <%= report.admin2 %>
+    <%= report.admin2.toUpperCase() %>
   </td>
   <td>
     <%= report.lat.toFixed(5) %>
@@ -48,7 +48,7 @@
     <%= report.notes || "None" %>
   </td>
   <td>
-    <%= report.fatalities || "Unknown" %>
+    <%= Number(report.fatalities) || "Unknown" %>
   </td>
   <td>
     <%= new Date(report.timestamp).toISOString() %>

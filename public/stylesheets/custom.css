@@ -63,3 +63,7 @@ body {
   background-color: rgb(167, 173, 180);
   border-radius: 5px;
 }
+.dtsb-button {
+  margin-top: 5px;
+  background-color: rgb(207, 211, 219);
+}

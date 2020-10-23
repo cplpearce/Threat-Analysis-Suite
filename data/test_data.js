@@ -118,6 +118,26 @@ testData = {
       notes: "A convoy of US soldiers on patrol attacked an ISIL camp.  Two ISIL members captured.",
       fatalities: 8,
       timestamp: "2020-10-09T02:00:00Z",
+    },
+    6: {
+      id: 6,
+      event_date: "2020-09-21T12:00:00Z",
+      year: 2020,
+      event_type: "kidnapping",
+      sub_event_type: "local population",
+      actor1: "isil",
+      actor1_assoc: "daesh",
+      actor2: "civilians",
+      actor2_assoc: "iraq freedom party",
+      country: "iraq",
+      admin1: "mosul",
+      admin2: "south mosul",
+      lat: 75.00200,
+      lon: 15.00200,
+      source: "mosul news",
+      notes: "A group of local political party members were kidnapped outside a mosque.",
+      fatalities: 0,
+      timestamp: "2020-09-20T02:00:00Z",
     }
   }
 }
