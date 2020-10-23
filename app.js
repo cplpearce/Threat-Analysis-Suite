@@ -12,6 +12,6 @@ app.use('/', routes);
 // EJS engine for views and logic
 app.set('view engine', 'ejs');
 // Public mapping of /img for images
-app.use(express.static(`${__dirname}/public`));
+app.use(express.static(`public`));
 
 module.exports = app;

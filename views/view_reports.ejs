@@ -11,8 +11,7 @@
   
   <!-- View Reports -->
   <table id="reports-table" class="table table-sm table-bordered table-striped table-hover">
-    <div id="table-toggle">
-
+    <div id="table-tools">
     </div>
     <thead class="thead-dark">
       <% rowTitles = [
@@ -23,8 +22,8 @@
         ]
       %>
       <tr>
-        <% rowTitles.forEach((title, index) => { %>
-          <th style="vertical-align: middle; text-align: center;"><span><%= title %></span></th>
+        <% rowTitles.forEach(title => { %>
+          <th style="vertical-align: middle; text-align: center;"><%= title %></th>
         <% }) %>
       </tr>
     </thead>
@@ -33,19 +32,50 @@
         <%- include("partials/_report_table_row", { report: report }); %>
       <% }) %>
     </tbody>
+    <tfoot>
+      <% rowTitles.forEach((title, index) => { %>
+        <th style="vertical-align: middle; text-align: center;"><%= title %></th>
+      <% }) %>
+    </tfoot>
   </table>
 
 <!-- View Specific Scripts -->
-<script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="js/dataTables.bootstrap4.min.js"></script>
-<link rel="stylesheet" type="text/css" href="/stylesheets/dataTables.bootstrap4.min.css">
+<!-- Datatables init -->
+<script type="text/javascript" src="/datatables/datatables.min.js"></script>
+<!-- Datatables buttons styler -->
+<link rel="stylesheet" type="text/css" href="/datatables/datatables.min.css"/>
 
 <!-- On load, convert the table to a data table -->
 <script>
   $(document).ready( function () {
-    $('#reports-table').DataTable({
+    const table = $('#reports-table').DataTable({
       scrollX: true,
+      colReorder: true,
+      rowReorder: true,
+      searchPanes: {
+        threshold: 1,
+        columns: [1, 3, 4, 10, 14]
+      },
+      "dom": 
+      "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+      "<'row'<'col-sm-12'tr>>" +
+      "<'row'<'col-sm-12 col-md-4'i><'pt-5 col-sm-12 col-md-8'p>>" +
+      "<'row'<'mt-4 col-sm-12 col-md-4'B><'mt-4 query-builder col-sm-12 col-md-8'Q>>",
+      buttons: [
+        'copy', 'excel', 'csv', 'pdf', 'print', 'colvis', 
+    ]
     });
+    table.searchPanes.container().appendTo(table.table().container());
+    // Toggle columns
+    $('a.toggle-vis').on( 'click', function (e) {
+        e.preventDefault();
+ 
+        // Get the column API object
+        const column = table.column( $(this).attr('data-column') );
+ 
+        // Toggle the visibility
+        column.visible( ! column.visible() );
+    } );
   }); 
 </script>
 </body>

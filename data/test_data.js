@@ -21,7 +21,7 @@ testData = {
   sigactTestData :{
     1: {
       id: 1,
-      event_date: Date.now() - 5,
+      event_date: "2020-10-20T13:00:00Z",
       year: 2020,
       event_type: "ied",
       sub_event_type: "road burried",
@@ -37,11 +37,11 @@ testData = {
       source: "Mosul SWAT",
       notes: "A bomb was set off near a market to disrupt and destabalize the city.",
       fatalities: 6,
-      timestamp: Date.now() - 4,
+      timestamp: "2020-10-20T12:25:00Z",
     }, 
     2: {
       id: 2,
-      event_date: Date.now() - 7,
+      event_date: "2020-10-19T14:00:00Z",
       year: 2020,
       event_type: "battle",
       sub_event_type: "armed conflict",
@@ -57,11 +57,11 @@ testData = {
       source: "Mosul Kurdish Militia",
       notes: "A battle erupted in Eastern Mosul, six DAESH soldiers killed, one civillian.",
       fatalities: 7,
-      timestamp: Date.now() - 5,
+      timestamp: "2020-10-19T07:00:00Z",
     },
     3: {
       id: 3,
-      event_date: Date.now() - 12,
+      event_date: "2020-10-18T15:00:00Z",
       year: 2020,
       event_type: "assassination",
       sub_event_type: "civilian",
@@ -77,11 +77,11 @@ testData = {
       source: "kurdish police",
       notes: "A local religous leader was killed by a pistol fired from a car.",
       fatalities: 1,
-      timestamp: Date.now() - 12,
+      timestamp: "2020-10-18T14:00:00Z",
     },
     4: {
       id: 4,
-      event_date: Date.now() - 15,
+      event_date: "2020-10-15T11:00:00Z",
       year: 2020,
       event_type: "assassination",
       sub_event_type: "Government",
@@ -97,11 +97,11 @@ testData = {
       source: "kurdish police",
       notes: "A Kurdish police officer was shot.",
       fatalities: 1,
-      timestamp: Date.now() - 14,
+      timestamp: "2020-10-15T10:00:00Z",
     },
     5: {
       id: 5,
-      event_date: Date.now() - 19,
+      event_date: "2020-10-10T12:00:00Z",
       year: 2020,
       event_type: "battle",
       sub_event_type: "armed conflict",
@@ -117,7 +117,7 @@ testData = {
       source: "us",
       notes: "A convoy of US soldiers on patrol attacked an ISIL camp.  Two ISIL members captured.",
       fatalities: 8,
-      timestamp: Date.now() - 18,
+      timestamp: "2020-10-09T02:00:00Z",
     }
   }
 }

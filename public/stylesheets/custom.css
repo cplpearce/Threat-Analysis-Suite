@@ -53,3 +53,13 @@ body {
 .dataTable > thead > tr > th[class*="sort"]:after {
   content: "" !important;
 }
+
+.query-builder {
+  background-color: rgb(167, 173, 180);
+  border-radius: 5px;
+}
+
+.button-panel {
+  background-color: rgb(167, 173, 180);
+  border-radius: 5px;
+}
