@@ -8,6 +8,10 @@
   src: url("/fonts/Roboto/Roboto-Medium.ttf");
 }
 
+html {
+  background-color: rgb(43, 42, 42);
+}
+
 h1,
 h2,
 h3,
@@ -35,6 +39,19 @@ span {
 
 .container {
   text-align: center;
-  height: 100%;
-  width: 100%;
+}
+
+.classification {
+  background-color: white;
+}
+
+.report-row {
+  text-transform: capitalize;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+#reports-table {
+  font-size: 90%;
 }

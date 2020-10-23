@@ -1,0 +1,55 @@
+<tr class="report-row">
+  <td>
+    <%= report.id %>
+  </td>
+  <td>
+    <%= new Date(report.event_date).toDateString() %>
+  </td>
+  <td>
+    <%= report.year %>
+  </td>
+  <td>
+    <%= report.event_type.toUpperCase() %>
+  </td>
+  <td>
+    <%= report.sub_event_type %>
+  </td>
+  <td>
+    <%= report.actor1.toUpperCase() %>
+  </td>
+  <td>
+    <%= report.actor1_assoc %>
+  </td>
+  <td>
+    <%= report.actor2.toUpperCase() %>
+  </td>
+  <td>
+    <%= report.actor2_assoc %>
+  </td>
+  <td>
+    <%= report.country %>
+  </td>
+  <td>
+    <%= report.admin1 %>
+  </td>
+  <td>
+    <%= report.admin2 %>
+  </td>
+  <td>
+    <%= report.lat %>
+  </td>
+  <td>
+    <%= report.lon %>
+  </td>
+  <td>
+    <%= report.source %>
+  </td>
+  <td>
+    <%= report.notes %>
+  </td>
+  <td>
+    <%= report.fatalities %>
+  </td>
+  <td>
+    <%= new Date(report.timestamp).toISOString() %>
+</tr>

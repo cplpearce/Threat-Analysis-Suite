@@ -1,17 +1,86 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-secondary text-light">
+<html lang="en">
 <!-- Head partial -->
-<%- include("partials/_head.ejs", {page: "View Reports"}) %>
+<%- include("partials/_head", { page: "View Reports" }) %>
 <body>
   <!-- Nav Partial -->
-  <%- include("partials/_nav.ejs") %>
+  <%- include("partials/_nav") %>
 
   <!-- Security Classification -->
-  <%- include("partials/_security_classification.ejs", {classification: "Unclassified"}) %>
+  <%- include("partials/_security_classification", { classification: "Unclassified" }) %>
   
-  <!-- Welcom Page Content -->
+  <!-- View Reports -->
+  <table id="reports-table" class="table table-sm thead-dark table-bordered table-striped table-dark table-hover">
+    <div class="input-group">
+      <input type="text" id="form-filter" class="form-control bg-dark rounded-0 text-light" placeholder="Filter by any data value">
+    </div>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">
+          ID
+        </th>
+        <th scope="col">
+          Event Date
+        </th>
+        <th scope="col">
+          Year
+        </th>
+        <th scope="col">
+          Event Type
+        </th>
+        <th scope="col">
+          Sub Event Type
+        </th>
+        <th scope="col">
+          Actor 1
+        </th>
+        <th scope="col">
+          Actor 1 Association
+        </th>
+        <th scope="col">
+          Actor 2
+        </th>
+        <th scope="col">
+          Actor 2 Association
+        </th>
+        <th scope="col">
+          Country
+        </th>
+        <th scope="col">
+          Admin 1
+        </th>
+        <th scope="col">
+          Admin 2
+        </th>
+        <th scope="col">
+          Latitude
+        </th>
+        <th scope="col">
+          Longitude
+        </th>
+        <th scope="col">
+          Source
+        </th>
+        <th scope="col">
+          Notes
+        </th>
+        <th scope="col">
+          Fatalities
+        </th>
+        <th scope="col">
+          Timestamp
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% Object.values(reports).forEach(report => { %>
+        <%- include("partials/_report_table_row", { report: report }); %>
+      <% }) %>
+    </tbody>
+  </table>
 
 <!-- View Specific Scripts -->
 <!-- Bootstrap form generator and ejs partial-->
+<script type="text/javascript" src="js/viewReports.js"></script>
 </body>
 </html>

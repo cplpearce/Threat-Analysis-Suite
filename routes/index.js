@@ -1,5 +1,8 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+
+// T E S T   D A T A
+const testData = require('../data/test_data')
 
 // R O O T
 router.get('/', (req, res, next) => {
@@ -13,7 +16,7 @@ router.get('/reports/add', (req, res, next) => {
 
 // V I E W   R E P O R T S 
 router.get('/reports', (req, res, next) => {
-  res.render('view_reports', { title: 'View Reports' });
+  res.render('view_reports', { title: 'View Reports' , reports: testData.sigactTestData });
 });
 
 // V I E W   R E P O R T
