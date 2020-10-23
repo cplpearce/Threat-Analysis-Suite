@@ -1,4 +1,4 @@
-<tr class="report-row">
+<tr>
   <td>
     <%= report.id %>
   </td>
@@ -12,43 +12,43 @@
     <%= report.event_type.toUpperCase() %>
   </td>
   <td>
-    <%= report.sub_event_type.toUpperCase() %>
+    <%= report.sub_event_type.toUpperCase() || "Misc" %>
   </td>
   <td>
     <%= report.actor1.toUpperCase() %>
   </td>
   <td>
-    <%= report.actor1_assoc.toUpperCase() %>
+    <%= report.actor1_assoc.toUpperCase() || "None" %>
   </td>
   <td>
-    <%= report.actor2.toUpperCase() %>
+    <%= report.actor2.toUpperCase() || "None" %>
   </td>
   <td>
-    <%= report.actor2_assoc.toUpperCase() %>
+    <%= report.actor2_assoc.toUpperCase() || "None" %>
   </td>
-  <td>
+  <td class="title-case">
     <%= report.country %>
   </td>
-  <td>
+  <td class="title-case">
     <%= report.admin1 %>
   </td>
-  <td>
+  <td class="title-case">
     <%= report.admin2 %>
   </td>
   <td>
-    <%= report.lat %>
+    <%= report.lat.toFixed(5) %>
   </td>
   <td>
-    <%= report.lon %>
+    <%= report.lon.toFixed(5) %>
   </td>
   <td>
-    <%= report.source %>
+    <%= report.source.toUpperCase() %>
   </td>
   <td>
-    <%= report.notes %>
+    <%= report.notes || "None" %>
   </td>
   <td>
-    <%= report.fatalities %>
+    <%= report.fatalities || "Unknown" %>
   </td>
   <td>
     <%= new Date(report.timestamp).toISOString() %>

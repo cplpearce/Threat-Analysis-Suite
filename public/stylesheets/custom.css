@@ -1,13 +1,15 @@
+/* F O N T   */
 @font-face {
   font-family: "Ubuntu";
   src: url("/fonts/Ubuntu/Ubuntu-Regular.ttf");
 }
 
-html {
-  font-size: 0.9em;
+body {
+  font-size: 1em;
   font-family: "Ubuntu";
 }
 
+/* N A V */
 .tas-icon {
   margin-right: 1em;
 }
@@ -16,10 +18,12 @@ html {
   filter: invert();
 }
 
+/* G E N E R A L */
 .container {
   text-align: center;
 }
 
+/* C L A S S I F I C A T I O N */
 .classification {
   background-color: rgb(0, 0, 0);
 }
@@ -32,17 +36,20 @@ html {
   color: white;
 }
 
-.report-row {
+/* R E P O R T   T A B L E */
+.title-case {
   text-transform: capitalize;
-}
-
-#reports-table {
-  font-size: 80%;
-  overflow: hidden;
 }
 
 #reports-table_wrapper {
   padding: 15px 3em;
   width: 100%;
   font-family: "Ubuntu";
+  font-size: 80%;
+  white-space: nowrap;
+}
+
+.dataTable > thead > tr > th[class*="sort"]:before,
+.dataTable > thead > tr > th[class*="sort"]:after {
+  content: "" !important;
 }
