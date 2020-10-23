@@ -1,35 +1,39 @@
-const express = require('express');
-
-const router = express.Router();
-
-// V I S U A L I Z A T I O N S 
-visualizations = {
-  0: 'Raw Chart',
-  1: 'Geo Chart'
-}
+var express = require('express');
+var router = express.Router();
 
 // R O O T
-router.get('/', (req, res) => {
-  res.send('It works!');
+router.get('/', (req, res, next) => {
+  res.render('main', { title: 'Main' });
 });
 
-// N E W   A P I
-router.get('/api/new', (req, res) => {
-  res.send('Creating a new API connection')
+// A D D   R E P O R T
+router.get('/reports/add', (req, res, next) => {
+  res.render('add_report', { title: 'Add Report' });
 });
 
-router.post('/api/new', (req, res) => {
-  res.send('POST\'d to /api/new - noice')
+// V I E W   R E P O R T S 
+router.get('/reports', (req, res, next) => {
+  res.render('view_reports', { title: 'View Reports' });
+});
+
+// V I E W   R E P O R T
+router.post('/reports/:id', (req, res, next) => {
+  res.render('report', { report_id: req.paramas.id })
 })
 
-// A P I S
-router.get('/api', (req, res) => {
-  res.send('All APIs')
+// G E O S P A T I A L   V I E W
+router.get('/geo', (req, res, next) => {
+  res.render('geo', { title: 'Geo' });
 });
 
-// V I S U A L I Z E
-router.get('/visualize/:id', (req, res) => {
-  res.send(`Visuzlize ${visualizations[req.params.id]}`)
-})
+// S E T T I N G S
+router.get('/settings', (req, res, next) => {
+  res.render('settings', { title: 'Settings' });
+});
+
+// P R O F I L E
+router.get('/profile', (req, res, next) => {
+  res.render('profile', { title: 'Profile' });
+});
 
 module.exports = router;

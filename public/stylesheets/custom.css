@@ -1,0 +1,40 @@
+@font-face {
+  font-family: "Ubuntu";
+  src: url("/fonts/Ubuntu/Ubuntu-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/fonts/Roboto/Roboto-Medium.ttf");
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+strong,
+button,
+nav a {
+  font-family: "Ubuntu";
+}
+
+p,
+span {
+  font-family: "Roboto";
+}
+
+.tas-icon {
+  margin-right: 1em;
+}
+
+.tas-icon.white {
+  filter: invert();
+}
+
+.container {
+  text-align: center;
+  height: 100%;
+  width: 100%;
+}
