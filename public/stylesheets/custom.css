@@ -3,30 +3,9 @@
   src: url("/fonts/Ubuntu/Ubuntu-Regular.ttf");
 }
 
-@font-face {
-  font-family: "Roboto";
-  src: url("/fonts/Roboto/Roboto-Medium.ttf");
-}
-
 html {
-  background-color: rgb(43, 42, 42);
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-strong,
-button,
-nav a {
+  font-size: 0.9em;
   font-family: "Ubuntu";
-}
-
-p,
-span {
-  font-family: "Roboto";
 }
 
 .tas-icon {
@@ -42,16 +21,28 @@ span {
 }
 
 .classification {
-  background-color: white;
+  background-color: rgb(0, 0, 0);
+}
+
+.classified {
+  color: red;
+}
+
+.unclassified {
+  color: white;
 }
 
 .report-row {
   text-transform: capitalize;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
 }
 
 #reports-table {
-  font-size: 90%;
+  font-size: 80%;
+  overflow: hidden;
+}
+
+#reports-table_wrapper {
+  padding: 15px 3em;
+  width: 100%;
+  font-family: "Ubuntu";
 }

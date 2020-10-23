@@ -7,69 +7,22 @@
   <%- include("partials/_nav") %>
 
   <!-- Security Classification -->
-  <%- include("partials/_security_classification", { classification: "Unclassified" }) %>
+  <%- include("partials/_security_classification", { classification: "unclassified" }) %>
   
   <!-- View Reports -->
-  <table id="reports-table" class="table table-sm thead-dark table-bordered table-striped table-dark table-hover">
-    <div class="input-group">
-      <input type="text" id="form-filter" class="form-control bg-dark rounded-0 text-light" placeholder="Filter by any data value">
-    </div>
+  <table id="reports-table" class="table table-sm table-bordered table-striped table-hover">
     <thead class="thead-dark">
+      <% rowTitles = [
+        "ID", "Event Date", "Year", "Event Type", "Sub Event Type",
+        "Actor 1", "Actor Association", "Actor 2", "Actor 2 Association",
+        "Country", "Admin 1", "Admin 2", "Latitude", "Longitude", "Source",
+        "Notes", "Fatalities", "Timestamp"
+        ]
+      %>
       <tr>
-        <th scope="col">
-          ID
-        </th>
-        <th scope="col">
-          Event Date
-        </th>
-        <th scope="col">
-          Year
-        </th>
-        <th scope="col">
-          Event Type
-        </th>
-        <th scope="col">
-          Sub Event Type
-        </th>
-        <th scope="col">
-          Actor 1
-        </th>
-        <th scope="col">
-          Actor 1 Association
-        </th>
-        <th scope="col">
-          Actor 2
-        </th>
-        <th scope="col">
-          Actor 2 Association
-        </th>
-        <th scope="col">
-          Country
-        </th>
-        <th scope="col">
-          Admin 1
-        </th>
-        <th scope="col">
-          Admin 2
-        </th>
-        <th scope="col">
-          Latitude
-        </th>
-        <th scope="col">
-          Longitude
-        </th>
-        <th scope="col">
-          Source
-        </th>
-        <th scope="col">
-          Notes
-        </th>
-        <th scope="col">
-          Fatalities
-        </th>
-        <th scope="col">
-          Timestamp
-        </th>
+        <% rowTitles.forEach(title => { %>
+          <th class="text-center" data-sortable="true"><%= title %></th>
+        <% }) %>
       </tr>
     </thead>
     <tbody>
@@ -80,7 +33,15 @@
   </table>
 
 <!-- View Specific Scripts -->
-<!-- Bootstrap form generator and ejs partial-->
-<script type="text/javascript" src="js/viewReports.js"></script>
+<script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="js/dataTables.bootstrap4.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/stylesheets/dataTables.bootstrap4.min.css">
+
+<!-- On load, convert the table to a data table -->
+<script>
+  $(document).ready( function () {
+    $('#reports-table').DataTable();
+  }); 
+</script>
 </body>
 </html>

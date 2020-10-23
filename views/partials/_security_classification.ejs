@@ -1,7 +1,14 @@
+<!-- This partial handles the SECURITY classification of the page -->
 <div class="container-fluid classification">
   <div class="row">
-    <div class="col text-center">
-      <%= classification %>
+    <!-- If UNCLASS WHITE text -->
+    <% if (classification.toUpperCase() === "UNCLASSIFIED") { %>
+      <div class="col text-center unclassified">
+    <!-- If NOT UNCLASS RED text -->
+    <% } else { %>
+      <div class="col text-center classified">
+    <% } %>
+      <b><%= classification.toUpperCase() %></b>
     </div>
   </div>
 </div>
