@@ -55,7 +55,7 @@ body {
 }
 
 .query-builder {
-  background-color: rgb(167, 173, 180);
+  background-color: rgba(236, 228, 228, 0.76);
   border-radius: 5px;
 }
 
@@ -63,7 +63,9 @@ body {
   background-color: rgb(167, 173, 180);
   border-radius: 5px;
 }
+
 .dtsb-button {
   margin-top: 5px;
   background-color: rgb(207, 211, 219);
+  border: 1px solid rgb(207, 211, 219);
 }

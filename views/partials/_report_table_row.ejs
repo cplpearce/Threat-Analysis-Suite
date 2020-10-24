@@ -1,6 +1,6 @@
 <tr>
   <td>
-    <%= report.id %>
+    <%= report.data_id %>
   </td>
   <td>
     <%= new Date(report.event_date).toDateString() %>
@@ -18,13 +18,13 @@
     <%= report.actor1.toUpperCase() %>
   </td>
   <td>
-    <%= report.actor1_assoc.toUpperCase() || "None" %>
+    <%= report.assoc_actor_1.toUpperCase() || "None" %>
   </td>
   <td>
     <%= report.actor2.toUpperCase() || "None" %>
   </td>
   <td>
-    <%= report.actor2_assoc.toUpperCase() || "None" %>
+    <%= report.assoc_actor_2.toUpperCase() || "None" %>
   </td>
   <td class="title-case">
     <%= report.country.toUpperCase() %>
@@ -36,10 +36,10 @@
     <%= report.admin2.toUpperCase() %>
   </td>
   <td>
-    <%= report.lat.toFixed(5) %>
+    <%= report.latitude.toFixed(5) %>
   </td>
   <td>
-    <%= report.lon.toFixed(5) %>
+    <%= report.longitude.toFixed(5) %>
   </td>
   <td>
     <%= report.source.toUpperCase() %>

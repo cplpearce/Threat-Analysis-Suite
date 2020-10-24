@@ -10,9 +10,12 @@
   <%- include("partials/_security_classification", { classification: "unclassified" }) %>
   
   <!-- View Reports -->
-  <table id="reports-table" class="table table-sm table-bordered table-striped table-hover">
-    <div id="table-tools">
+  <div class="d-flex justify-content-center mt-5">
+    <div id="reports-table-loading" class="spinner-border  text-primary" role="status">
+      <span class="sr-only">Loading...</span>
     </div>
+  </div>
+  <table id="reports-table" class="invisible w-100 table table-sm table-bordered table-striped table-hover">
     <thead class="thead-dark">
       <% rowTitles = [
         "ID", "Event Date", "Year", "Event Type", "Sub Event Type",
@@ -47,13 +50,26 @@
 
 <!-- On load, convert the table to a data table -->
 <script>
-  $(document).ready( function () {
+  $(document).ready(() => {
+
+    // Hide the loader and unhind the spinner
+    $("#reports-table").removeClass("invisible")
+    $("#reports-table-loading").remove()
+
     const table = $('#reports-table').DataTable({
+      // Scroll x plane
       scrollX: true,
+      // Allow column reorder
       colReorder: true,
-      rowReorder: true,
+      // Notes column max length 64 char
+      columnDefs: [{
+        targets: -3,
+        render: (data, type, row) => {
+          return data.substr(0, 64) + "...";
+        }
+      }],
+      // Add search panes for 5 columns
       searchPanes: {
-        threshold: 1,
         columns: [1, 3, 4, 10, 14]
       },
       "dom": 
@@ -66,17 +82,10 @@
         'copy', 'excel', 'csv', 'pdf', 'print', 'colvis', 
     ]
     });
-    table.searchPanes.container().appendTo(table.table().container());
-    // Toggle columns
-    $('a.toggle-vis').on( 'click', function (e) {
-        e.preventDefault();
- 
-        // Get the column API object
-        const column = table.column( $(this).attr('data-column') );
- 
-        // Toggle the visibility
-        column.visible( ! column.visible() );
-    } );
+
+    // Add the search panes to the table top
+    table.searchPanes.container().prependTo(table.table().container());
+
   }); 
 </script>
 </body>

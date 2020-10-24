@@ -3,7 +3,6 @@ const routes = require('./routes/index');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
 
-
 // E X P R E S S
 const app = express();
 
