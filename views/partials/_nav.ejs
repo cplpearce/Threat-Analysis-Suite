@@ -6,12 +6,18 @@
     </div>  
     <ul class="nav justify-content-end">
       <div class="btn-group" role="group" aria-label="Basic example">
-        <a href="/" role="button" class="btn btn-light">Main</a>
-        <a href="/reports/add" role="button" class="btn btn-primary">Add Report</a>
-        <a href="/reports" role="button" class="btn btn-danger">View Reports</a>
-        <a href="/geo" role="button" class="btn btn-success">Geospatial View</a>
-        <a href="/settings" role="button" class="btn btn-warning">Settings</a>
-        <a href="/login" role="button" class="btn btn-info">Login</a>
+        <% if (typeof user !== "undefined") { %>
+          <a href="/main" role="button" class="btn btn-light">Main</a>
+          <a href="/reports/add" role="button" class="btn btn-primary">Add Report</a>
+          <a href="/reports" role="button" class="btn btn-danger">View Reports</a>
+          <a href="/geo" role="button" class="btn btn-success">Geospatial View</a>
+          <a href="/settings" role="button" class="btn btn-warning">Settings</a>
+        <% } %>
+        <% if (typeof user !== "undefined") { %>
+          <a href="/logout" role="button" class="btn btn-danger">Logout</a>
+          <% } else { %>
+          <a href="/login" role="button" class="btn btn-info">Login</a>
+        <% } %>
       </div>
     </ul>
   </nav>
