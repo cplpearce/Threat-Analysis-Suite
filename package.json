@@ -2,10 +2,10 @@
   "name": "final",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "nodemon": "nodemon ./start.js",
+    "nodemon": "nodemon ./app.js",
     "db:reset": "node bin/resetdb.js"
   },
   "keywords": [],
@@ -13,7 +13,9 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "cookie": "^0.4.1",
     "cookie-parser": "^1.4.5",
+    "cookie-session": "^1.4.0",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
