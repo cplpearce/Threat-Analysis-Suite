@@ -35,6 +35,12 @@ PostSQL || SQLite?
 
 ## Data API
 
+* Turf.js           | https://www.npmjs.com/package/@turf/turf
+* OpenLayers.js     | https://openlayers.org/
+* Leaflet Heatmap   | http://leaflet.github.io/Leaflet.heat/demo/
+
+## Data API
+
 This suite uses ACLED data, open source UNCLASSIFIED data for its analysis.
 
 https://acleddata.com/acleddatanew/wp-content/uploads/dlm_uploads/2019/04/ACLED_Codebook_2019FINAL_pbl.pdf

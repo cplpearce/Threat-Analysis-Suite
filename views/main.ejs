@@ -10,6 +10,31 @@
   <%- include("partials/_security_classification.ejs", { classification: "Unclassified" }) %>
   
   <!-- Main Page Content -->
+  <div class="container mt-5">
+    <h5>Welcome to TAS - the Threat Analysis Suite.</h5>
+      
+      <span id="main-time"></span>
+  </div>
 
+<script>
+  // Create DTG calculator
+  const calcDTG = () => {
+    let t = new Date();
+    // DTG vars are zero-padded and sliced to add a 0 if required
+    let day = `0${t.getUTCDate()}`.slice(-2);
+    let hours = `0${t.getUTCHours()}`.slice(-2);
+    let minutes = `0${t.getUTCMinutes()}`.slice(-2);
+    let month = t.toLocaleString('default', { month: 'short' });
+    let year = t.getUTCFullYear().toString().slice(-2);
+    // Return a DTG formatted string
+    return dtg = `${day} ${hours}${minutes}Z ${month} ${year}`;
+  }
+  // Call it once on init
+  $("#main-time").html(calcDTG())
+  // Then every 1 second after
+  setInterval(() => {
+    $("#main-time").html(calcDTG())
+  }, 1000);
+</script>
 </body>
 </html>
