@@ -22,16 +22,12 @@ There won't be a need to add complicated security methods to the database.
 The site should use only simple CSS, and Bootstrap.
 
 ### Tech Stack
-<<<<<<< HEAD
 
-=======
->>>>>>> ae24970af9fa28f3aa9240c838b2502c69b788d4
 Node && Express
 Electron?
 PostSQL || SQLite?
 
 ### JS Libraries
-<<<<<<< HEAD
 
 - Turf.js | https://www.npmjs.com/package/@turf/turf
 - OpenLayers.js | https://openlayers.org/
@@ -39,13 +35,12 @@ PostSQL || SQLite?
 
 ## Data API
 
-=======
 * Turf.js           | https://www.npmjs.com/package/@turf/turf
 * OpenLayers.js     | https://openlayers.org/
 * Leaflet Heatmap   | http://leaflet.github.io/Leaflet.heat/demo/
 
 ## Data API
->>>>>>> ae24970af9fa28f3aa9240c838b2502c69b788d4
+
 This suite uses ACLED data, open source UNCLASSIFIED data for its analysis.
 
 https://acleddata.com/acleddatanew/wp-content/uploads/dlm_uploads/2019/04/ACLED_Codebook_2019FINAL_pbl.pdf
@@ -53,10 +48,7 @@ https://acleddata.com/acleddatanew/wp-content/uploads/dlm_uploads/2019/04/ACLED_
 https://acleddata.com/data-export-tool/
 
 Here is the schema and key data for that data.
-<<<<<<< HEAD
 
-=======
->>>>>>> ae24970af9fa28f3aa9240c838b2502c69b788d4
 ```
 Column Name Content
 1. ISO               ....   A numeric code for each individual country
