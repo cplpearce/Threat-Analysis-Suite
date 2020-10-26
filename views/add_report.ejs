@@ -20,7 +20,7 @@
             Actors: ["Actor 1", "Actor 1 Association", "Actor 2", "Actor 2 Association"] },
           rightColumn: {
             Location: ["Country", "Admin 1", "Admin 2", "Latitude", "Longitude"],
-            Data: ["Source", "Fatalities"] }
+            Data: ["Source", "Fatalities", "Reference Number"] }
           } 
       %>
       <% Object.keys(titles).forEach(col => { %>
@@ -34,12 +34,8 @@
       </div>
       <% }) %>
     </div>
-    <h5 class="text-center my-2 w-100">Report Notes</h5>
-    <div class="container text-center">
-      <textarea id="new-report-notes">
-
-      </textarea>
-    </div>
+    <h5 class="text-center my-2">Report Notes</h5>
+      <textarea name="notes" id="new-report-notes"></textarea>
   </div>
 
 <!-- View Specific Scripts -->
