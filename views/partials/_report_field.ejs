@@ -1,0 +1,16 @@
+<% 
+  field = String(field);
+  fieldReplace = field.replace(/ /g,'');
+%>
+
+<% if (field === 'Event Date') { %>
+  <input type="datetime-local" class="form-control my-2" 
+  name="<%= field %>" id="<%= fieldReplace %>-input">
+<% } else { %> 
+  <input type="text" class="form-control my-2" list="<%= field %>-list" 
+  placeholder="<%= field %>" name="<%= fieldReplace %>" id="<%= fieldReplace %>-input">
+  <datalist id="<%= field %>-list">
+    <option value="Use EJS to generate...">
+    <option value=".. all vals from db">
+  </datalist>
+<% } %>

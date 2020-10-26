@@ -10,8 +10,47 @@
   <%- include("partials/_security_classification", {classification: "Unclassified"}) %>
   
   <!-- Add Report Content -->
+  <div class="mt-5 container w-50">
+    <div class="row">
+      <%
+        titles = {
+          leftColumn: {
+            Time: ["Event Date"],
+            Event: ["Event Type", "Sub Event Type"],
+            Actors: ["Actor 1", "Actor 1 Association", "Actor 2", "Actor 2 Association"] },
+          rightColumn: {
+            Location: ["Country", "Admin 1", "Admin 2", "Latitude", "Longitude"],
+            Data: ["Source", "Fatalities"] }
+          } 
+      %>
+      <% Object.keys(titles).forEach(col => { %>
+        <div class="col">
+        <% Object.keys(titles[col]).forEach((fieldType) => { %>
+          <h5 class="my-2"><%= fieldType %></h5>
+          <% Object.values(titles[col][fieldType]).forEach(field => { %>
+            <%- include("partials/_report_field", { field }) %>
+          <% }) %>
+        <% }) %>
+      </div>
+      <% }) %>
+    </div>
+    <h5 class="text-center my-2 w-100">Report Notes</h5>
+    <div class="container text-center">
+      <textarea id="new-report-notes">
+
+      </textarea>
+    </div>
+  </div>
 
 <!-- View Specific Scripts -->
-<!-- If any -->
+<script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
+<script>
+  tinymce.init({
+      selector: "#new-report-notes"
+  });
+</script>
+<style>
+  .mce-notification {display: none !important;}
+</style>
 </body>
 </html>

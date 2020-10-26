@@ -69,3 +69,8 @@ body {
   background-color: rgb(207, 211, 219);
   border: 1px solid rgb(207, 211, 219);
 }
+
+/* A D D   R E P O R T */
+#new-report-notes {
+  height: 300px;
+}
