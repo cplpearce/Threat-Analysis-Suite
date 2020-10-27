@@ -70,6 +70,16 @@ body {
   border: 1px solid rgb(207, 211, 219);
 }
 
+.truncate {
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.popover {
+  font-weight: 800;
+}
 /* A D D   R E P O R T */
 #new-report-notes {
   height: 300px;

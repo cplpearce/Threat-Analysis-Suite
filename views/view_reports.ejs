@@ -1,92 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- Head partial -->
-<%- include("partials/_head", { page: "View Reports" }) %>
-<body>
-  <!-- Nav Partial -->
-  <%- include("partials/_nav") %>
+  <!-- Head partial -->
+  <%- include("partials/_head", { page: "View Reports" }) %>
+  <body>
+    <!-- Nav Partial -->
+    <%- include("partials/_nav") %>
 
-  <!-- Security Classification -->
-  <%- include("partials/_security_classification", { classification: "unclassified" }) %>
-  
-  <!-- View Reports -->
-  <div class="d-flex justify-content-center mt-5">
-    <div id="reports-table-loading" class="spinner-border  text-primary" role="status">
-      <span class="sr-only">Loading...</span>
+    <!-- Security Classification -->
+    <%- include("partials/_security_classification", { classification:
+    "unclassified" }) %>
+
+    <!-- View Reports -->
+    <div class="d-flex justify-content-center mt-5">
+      <div
+        id="reports-table-loading"
+        class="spinner-border text-primary"
+        role="status"
+      >
+        <span class="sr-only">Loading...</span>
+      </div>
     </div>
-  </div>
-  <table id="reports-table" class="invisible w-100 table table-sm table-bordered table-striped table-hover">
-    <thead class="thead-dark">
-      <% rowTitles = [
-        "ID", "Event Date", "Year", "Event Type", "Sub Event Type",
-        "Actor 1", "Actor 1 Association", "Actor 2", "Actor 2 Association",
-        "Country", "Admin 1", "Admin 2", "Latitude", "Longitude", "Source",
-        "Notes", "Fatalities", "Timestamp"
-        ]
-      %>
-      <tr>
-        <% rowTitles.forEach(title => { %>
-          <th style="vertical-align: middle; text-align: center;"><%= title %></th>
+    <table
+      id="reports-table"
+      class="invisible w-100 table table-sm table-bordered table-striped table-hover nowwrap"
+    >
+      <thead class="thead-dark">
+        <tr>
+          <% Object.keys(fieldNames).forEach(field => { %>
+          <th style="vertical-align: middle; text-align: center">
+            <%= fieldNames[field] %>
+          </th>
+          <% }) %>
+        </tr>
+      </thead>
+      <tbody>
+        <% Object.values(reports).forEach(report => { %> <%-
+        include("partials/_view_report_table_row", { report, fieldNames }); %>
         <% }) %>
-      </tr>
-    </thead>
-    <tbody>
-      <% Object.values(reports).forEach(report => { %>
-        <%- include("partials/_report_table_row", { report: report }); %>
-      <% }) %>
-    </tbody>
-    <tfoot>
-      <% rowTitles.forEach((title, index) => { %>
-        <th style="vertical-align: middle; text-align: center;"><%= title %></th>
-      <% }) %>
-    </tfoot>
-  </table>
+      </tbody>
+      <tfoot>
+        <% Object.keys(fieldNames).forEach(field => { %>
+        <th style="vertical-align: middle; text-align: center">
+          <%= fieldNames[field] %>
+        </th>
+        <% }) %>
+      </tfoot>
+    </table>
 
-<!-- View Specific Scripts -->
-<!-- Datatables init -->
-<script type="text/javascript" src="/js/datatables/datatables.min.js"></script>
-<!-- Datatables buttons styler -->
-<link rel="stylesheet" type="text/css" href="/js/datatables/datatables.min.css"/>
+    <!-- View Specific Scripts -->
+    <!-- Datatables init -->
+    <script
+      type="text/javascript"
+      src="/js/datatables/datatables.min.js"
+    ></script>
+    <!-- Datatables buttons styler -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/js/datatables/datatables.min.css"
+    />
+    <!-- Popper.js -->
+    <script type="text/javascript" src="/js/popper.min.js"></script>
+    <!-- On load, convert the table to a data table -->
+    <script>
+      $(document).ready(() => {
+        // Hide the loader and unhind the spinner
+        $("#reports-table").removeClass("invisible");
+        $("#reports-table-loading").remove();
 
-<!-- On load, convert the table to a data table -->
-<script>
-  $(document).ready(() => {
+        const table = $("#reports-table").DataTable({
+          // Scroll x plane
+          scrollX: true,
+          // Allow column reorder
+          colReorder: true,
+          // Notes column max length 64 char
+          columnDefs: [
+            {
+              targets: [-4, -3],
+              className: "truncate",
+              render: function (data) {
+                return `<a data-toggle="popover" data-trigger="focus" tabindex="0" data-content="${data}">${data}</a>`;
+              },
+            },
+          ],
+          // Add search panes for 5 columns
+          searchPanes: {
+            threshold: 1,
+            columns: [1, 2, 3, 5, 12, -1],
+          },
+          dom:
+            "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-12 col-md-4'i><'col-sm-12 col-md-8'p>>" +
+            "<'row'<'mt-4 col-sm-12 col-md-4'B>>" +
+            "<'row'<'p-2 m-2 query-builder col-sm-12 col-md-12'Q>>",
+          buttons: ["copy", "excel", "csv", "pdf", "print", "colvis"],
+        });
 
-    // Hide the loader and unhind the spinner
-    $("#reports-table").removeClass("invisible")
-    $("#reports-table-loading").remove()
+        // Add the search panes to the table top
+        table.searchPanes.container().prependTo(table.table().container());
 
-    const table = $('#reports-table').DataTable({
-      // Scroll x plane
-      scrollX: true,
-      // Allow column reorder
-      colReorder: true,
-      // Notes column max length 64 char
-      columnDefs: [{
-        targets: -3,
-        render: (data, type, row) => {
-          return data.substr(0, 64) + "...";
-        }
-      }],
-      // Add search panes for 5 columns
-      searchPanes: {
-        columns: [1, 3, 4, 10, 14]
-      },
-      "dom": 
-      "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
-      "<'row'<'col-sm-12'tr>>" +
-      "<'row'<'col-sm-12 col-md-4'i><'col-sm-12 col-md-8'p>>" +
-      "<'row'<'mt-4 col-sm-12 col-md-4'B>>" +
-      "<'row'<'p-2 m-2 query-builder col-sm-12 col-md-12'Q>>",
-      buttons: [
-        'copy', 'excel', 'csv', 'pdf', 'print', 'colvis', 
-    ]
-    });
-
-    // Add the search panes to the table top
-    table.searchPanes.container().prependTo(table.table().container());
-
-  }); 
-</script>
-</body>
+        // Enable tooltips
+        $(function () {
+          $('[data-toggle="popover"]').popover({ trigger: "hover" });
+        });
+        table.on("draw", function () {
+          $('[data-toggle="popover"]').popover({ trigger: "hover" });
+        });
+      });
+    </script>
+  </body>
 </html>

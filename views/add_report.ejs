@@ -1,52 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- Head partial -->
-<%- include("partials/_head", { page: "Add Report" }) %>
-<body>
-  <!-- Nav Partial -->
-  <%- include("partials/_nav") %>
+  <!-- Head partial -->
+  <%- include("partials/_head", { page: "Add Report" }) %>
+  <body>
+    <!-- Nav Partial -->
+    <%- include("partials/_nav") %>
 
-  <!-- Security Classification -->
-  <%- include("partials/_security_classification", {classification: "Unclassified"}) %>
-  
-  <!-- Add Report Content -->
-  <div class="mt-5 container w-50">
-    <div class="row">
-      <%
-        titles = {
-          leftColumn: {
-            Time: ["Event Date"],
-            Event: ["Event Type", "Sub Event Type"],
-            Actors: ["Actor 1", "Actor 1 Association", "Actor 2", "Actor 2 Association"] },
-          rightColumn: {
-            Location: ["Country", "Admin 1", "Admin 2", "Latitude", "Longitude"],
-            Data: ["Source", "Fatalities", "Reference Number"] }
-          } 
-      %>
-      <% Object.keys(titles).forEach(col => { %>
-        <div class="col">
-        <% Object.keys(titles[col]).forEach((fieldType) => { %>
-          <h5 class="my-2"><%= fieldType %></h5>
-          <% Object.values(titles[col][fieldType]).forEach(field => { %>
-            <%- include("partials/_report_field", { field }) %>
-          <% }) %>
-        <% }) %>
+    <!-- Security Classification -->
+    <%- include("partials/_security_classification", {classification:
+    "Unclassified"}) %>
+
+    <!-- Add Report Content -->
+    <div class="mt-5 container w-50">
+      <div class="row">
+        <% Object.keys(fieldNames).forEach(fieldRaw => { %>
+        <h5 class="my-2"><%= fieldNames[fieldRaw] %></h5>
+        <%- include("partials/_add_report_field", { fieldHuman:
+        fieldNames[fieldRaw], fieldRaw, unique: unique[fieldRaw] }) %> <% }) %>
       </div>
-      <% }) %>
-    </div>
-    <h5 class="text-center my-2">Report Notes</h5>
+      <h5 class="text-center my-2">Report Notes</h5>
       <textarea name="notes" id="new-report-notes"></textarea>
-  </div>
+    </div>
 
-<!-- View Specific Scripts -->
-<script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
-<script>
-  tinymce.init({
-      selector: "#new-report-notes"
-  });
-</script>
-<style>
-  .mce-notification {display: none !important;}
-</style>
-</body>
+    <!-- View Specific Scripts -->
+    <script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
+    <script>
+      tinymce.init({
+        selector: "#new-report-notes",
+      });
+    </script>
+    <style>
+      .mce-notification {
+        display: none !important;
+      }
+    </style>
+  </body>
 </html>
