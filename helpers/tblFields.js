@@ -1,6 +1,9 @@
 module.exports = () => {
   const fieldNames = {
-    internal_id: "Internal ID",
+    id: "DB ID",
+    api_event_id: "API Event ID",
+    api_id: "API ID",
+    analyst_id: "Analyst ID",
     event_type: "Event Type",
     sub_event_type: "Sub Event Type",
     actor1: "Actor 1",

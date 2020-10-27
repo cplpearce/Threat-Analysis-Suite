@@ -20,27 +20,15 @@
     <form action="/login" method="POST" >
       <div class="form-group">
         <label for="login-username">Username</label>
-        <input name="username" type="user" class="form-control login-field" id="login-username">
+        <input required name="username" type="user" class="form-control login-field" id="login-username">
         <small id="emailHelp" class="form-text text-muted">Set by your system administrator.</small>
       </div>
       <div class="form-group text-center">
         <label for="login-pin">PIN</label>
-        <input name="pin" type="password" class="form-control login-field" id="login-pin" maxlength="4">
+        <input required name="pin" type="password" class="form-control login-field" id="login-pin" maxlength="4">
       </div>
       <button id="login-submit" type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>
-<!-- View Specific Scripts -->
-<script>
-  $(document).ready(() => {
-    $("#login-submit").attr("disabled", "true")
-    $(".login-field").keyup(() => {
-      if ($("#login-username").val() && $("#login-pin").val()) {
-        console.log('e')
-        $("#login-submit").attr("disabled", false)
-      }
-    })
-  });
-</script>
 </body>
 </html>

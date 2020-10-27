@@ -1,33 +1,35 @@
-<% if (fieldHuman === 'Timestamp') { %>
-<input
-  type="datetime-local"
+<% if (fieldRaw === 'notes') { %>
+  <textarea
+  required
   class="form-control my-2"
-  name="<%= fieldRaw %>"
-  id="<%= fieldRaw %>-input"
-/>
-<% } else if (['Latitude', ' Longitude', 'Fatailities'].includes(fieldHuman)) {
-%>
-<input
-  type="number"
-  class="form-control my-2"
-  list="<%= fieldRaw %>-list"
   placeholder="<%= fieldHuman %>"
   name="<%= fieldRaw %>"
   id="<%= fieldRaw %>-input"
-/>
+  ></textarea>
 <% } else { %>
-<input
-  type="text"
+  <input 
+  required
   class="form-control my-2"
   list="<%= fieldRaw %>-list"
   placeholder="<%= fieldHuman %>"
   name="<%= fieldRaw %>"
   id="<%= fieldRaw %>-input"
-/>
-<% if (unique) { %>
-<datalist id="<%= fieldRaw %>-list">
-  <% unique.forEach(val => { %>
-  <option value="<%= val %>"><% }) %></option>
-</datalist>
+  <%# Change input type by field %>
+  <% if (fieldHuman === 'Timestamp') { %>
+    type="datetime-local" 
+  <% } else if (['Latitude', 'Longitude', 'Fatailities'].includes(fieldHuman)) { %>
+    type="number" 
+  <% } else { %> 
+    type="text"
+  <% } %>
+  />
+  <%# If it has unique vals, add them %>
+  <% if (unique) { %>
+    <datalist id="<%= fieldRaw %>-list">
+      <% unique.forEach(val => { %>
+        <option value="<%= val %>">
+      <% }) %>
+    </datalist>
+  <% } %>
+<% } %>
 
-<% } %> <% } %>

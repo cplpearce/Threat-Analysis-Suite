@@ -11,28 +11,18 @@
     "Unclassified"}) %>
 
     <!-- Add Report Content -->
-    <div class="mt-5 container w-50">
-      <div class="row">
-        <% Object.keys(fieldNames).forEach(fieldRaw => { %>
-        <h5 class="my-2"><%= fieldNames[fieldRaw] %></h5>
-        <%- include("partials/_add_report_field", { fieldHuman:
-        fieldNames[fieldRaw], fieldRaw, unique: unique[fieldRaw] }) %> <% }) %>
+    <div class="my-5 container w-50">
+      <form id="add-new-report" action="/reports/add" method="POST" >
+        <div class="row">
+          <!-- Iterate fields !except notes and id -->
+          <% Object.keys(fieldNames) .filter(field => !['id', 'api_id', 'api_event_id', 'analyst_id'].includes(field)).forEach(fieldRaw => { %>
+            <h5 class="my-2"><%= fieldNames[fieldRaw] %></h5>
+            <%- include("partials/_add_report_field", { fieldHuman: fieldNames[fieldRaw], fieldRaw, unique: unique[fieldRaw] }) %> 
+          <% }) %>
+        </div>
+        <button id="new-report-submit" type="submit" class="btn btn-primary">Submit New Record</button>
       </div>
-      <h5 class="text-center my-2">Report Notes</h5>
-      <textarea name="notes" id="new-report-notes"></textarea>
-    </div>
-
+    </form>
     <!-- View Specific Scripts -->
-    <script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
-    <script>
-      tinymce.init({
-        selector: "#new-report-notes",
-      });
-    </script>
-    <style>
-      .mce-notification {
-        display: none !important;
-      }
-    </style>
   </body>
 </html>

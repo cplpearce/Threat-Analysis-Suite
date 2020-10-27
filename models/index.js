@@ -1,4 +1,8 @@
+// I M P O R T   T A B L E   N A M E S
+const tblHelpers = require("../helpers/tblFields");
+
 module.exports = (db) => {
+  // G E T   A L L   R E P O R T S
   const getReports = () => {
     const query = {
       text: "SELECT * FROM reports",
@@ -9,7 +13,7 @@ module.exports = (db) => {
       .then((result) => result.rows)
       .catch((err) => err);
   };
-
+  // G E T   U N I Q U E   V A R S
   const getUnique = () => {
     const fields = [
       "event_type",
@@ -53,8 +57,23 @@ module.exports = (db) => {
     });
   };
 
+  // P O S T   N E W    R E P O R T
+  const addReport = (fields) => {
+    const query = {
+      text: `INSERT INTO reports(${Object.keys(tblHelpers()).slice(
+        3
+      )}) VALUES (${fields.map((field) => `'${field}'`)})`,
+    };
+    console.log(query);
+    return db
+      .query(query)
+      .then((result) => console.log(result.rows))
+      .catch((err) => console.log(err));
+  };
+
   return {
     getReports,
     getUnique,
+    addReport,
   };
 };

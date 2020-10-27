@@ -52,6 +52,7 @@ app.post("/login", (req, res, next) => {
   const reqVars = req.body;
   if (reqVars.username === "admin" && reqVars.pin === "1234") {
     res.cookie("username", reqVars.username);
+    res.cookie("analyst_id", "TAS");
     res.redirect("main");
   } else {
     res.render("login", { title: "Login", error: "INVALID CREDENTIALS" });
@@ -85,6 +86,7 @@ app.get("/main", (req, res) => {
 
 // A D D   R E P O R T
 
+// GET
 app.get("/reports/add", (req, res) => {
   dbHelpers.getUnique().then((unique) =>
     res.render(`${req.baseUrl}add_report`, {
@@ -92,6 +94,16 @@ app.get("/reports/add", (req, res) => {
       fieldNames: tblHelpers(),
     })
   );
+});
+
+// POST
+app.post("/reports/add", (req, res) => {
+  dbHelpers
+    .addReport([req.cookies.username, ...Object.values(req.body)])
+    .then(() => {
+      // Change to reports/:id when ready
+      res.render("main");
+    });
 });
 
 // V I E W   R E P O R T S
@@ -106,7 +118,7 @@ app.get("/reports", (req, res) => {
 
 // V I E W   R E P O R T
 
-app.post("/reports/:id", (req, res) => {
+app.get("/reports/:id", (req, res) => {
   res.render(
     "report",
     { report_id: req.paramas.id },

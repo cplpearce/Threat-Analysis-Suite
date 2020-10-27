@@ -1,8 +1,13 @@
 <tr>
   <% Object.keys(fieldNames).forEach(field => { %>
   <td>
-    <% if (field === "timestamp") { %> <%= new Date(report[field] * 1000) %> <%
-    } else { %> <%= report[field] %> <% } %>
+    <% if (field === "timestamp") { %> 
+      <%= new Date(report[field] * 1000).toUTCString() %> 
+    <% } else if (!report[field]) { %> 
+      None
+    <% } else {%>
+      <%= report[field] %> 
+    <% } %>
   </td>
   <% }) %>
 </tr>
