@@ -75,4 +75,6 @@ Column Name Content
 23. LATITUDE         ....   The latitude of the location
 24. LONGITUDE        ....   The longitude of the location
 25. GEO_PRECISION    ....   A numeric code indicating the level of certainty of the location
+
+\COPY reports(analyst_id, internal_id, api_id, api_event_id, event_type, sub_event_type, actor1, assoc_actor_1, actor2, assoc_actor_2, region, country, admin1, admin2, admin3, location, latitude, longitude, source, notes, fatalities, timestamp) FROM /home/clinton/lighthouse/projects/Threat-Analysis-Suite/data/MiddleEast_2020Oct2o.csv WITH (FORMAT csv, DELIMITER ',', HEADER true);
 ```
