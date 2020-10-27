@@ -1,17 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- Head partial -->
-<%- include("partials/_head.ejs", { page: "Add Report" }) %>
-<body>
-  <!-- Nav Partial -->
-  <%- include("partials/_nav") %>
+  <!-- Head partial -->
+  <%- include("partials/_head", { page: "Add Report" }) %>
+  <body>
+    <!-- Nav Partial -->
+    <%- include("partials/_nav") %>
 
-  <!-- Security Classification -->
-  <%- include("partials/_security_classification.ejs", {classification: "Unclassified"}) %>
-  
-  <!-- Add Report Content -->
+    <!-- Security Classification -->
+    <%- include("partials/_security_classification", {classification:
+    "Unclassified"}) %>
 
-<!-- View Specific Scripts -->
-<!-- If any -->
-</body>
+    <!-- Add Report Content -->
+    <div class="mt-5 container w-50">
+      <div class="row">
+        <% Object.keys(fieldNames).forEach(fieldRaw => { %>
+        <h5 class="my-2"><%= fieldNames[fieldRaw] %></h5>
+        <%- include("partials/_add_report_field", { fieldHuman:
+        fieldNames[fieldRaw], fieldRaw, unique: unique[fieldRaw] }) %> <% }) %>
+      </div>
+      <h5 class="text-center my-2">Report Notes</h5>
+      <textarea name="notes" id="new-report-notes"></textarea>
+    </div>
+
+    <!-- View Specific Scripts -->
+    <script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
+    <script>
+      tinymce.init({
+        selector: "#new-report-notes",
+      });
+    </script>
+    <style>
+      .mce-notification {
+        display: none !important;
+      }
+    </style>
+  </body>
 </html>

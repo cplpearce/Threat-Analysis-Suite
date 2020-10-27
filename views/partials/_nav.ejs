@@ -5,13 +5,21 @@
       <a class="navbar-brand mx-1" href="/"><strong>Threat Analysis Suite</strong></a>
     </div>  
     <ul class="nav justify-content-end">
-      <div class="btn-group" role="group" aria-label="Basic example">
+      <div class="btn-group" role="group">
         <% if (typeof user !== "undefined") { %>
           <a href="/main" role="button" class="btn btn-light">Main</a>
-          <a href="/reports/add" role="button" class="btn btn-primary">Add Report</a>
-          <a href="/reports" role="button" class="btn btn-danger">View Reports</a>
+          <div class="btn-group" role="group">
+            <button id="reports-dropdown" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+              Reports
+            </button>
+            <div class="dropdown-menu">
+              <a href="/reports" class="dropdown-item">View Reports</a>
+              <a href="/reports/add" class="dropdown-item">Add Report</a>
+            </div>
+          </div>
           <a href="/geo" role="button" class="btn btn-success">Geospatial View</a>
-          <a href="/settings" role="button" class="btn btn-warning">Settings</a>
+          <a href="/api" role="button" class="btn btn-warning">APIs</a>
+          <a href="/settings" role="button" class="btn btn-info">Settings</a>
         <% } %>
         <% if (typeof user !== "undefined") { %>
           <a href="/logout" role="button" class="btn btn-danger">Logout</a>

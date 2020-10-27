@@ -1,0 +1,33 @@
+<% if (fieldHuman === 'Timestamp') { %>
+<input
+  type="datetime-local"
+  class="form-control my-2"
+  name="<%= fieldRaw %>"
+  id="<%= fieldRaw %>-input"
+/>
+<% } else if (['Latitude', ' Longitude', 'Fatailities'].includes(fieldHuman)) {
+%>
+<input
+  type="number"
+  class="form-control my-2"
+  list="<%= fieldRaw %>-list"
+  placeholder="<%= fieldHuman %>"
+  name="<%= fieldRaw %>"
+  id="<%= fieldRaw %>-input"
+/>
+<% } else { %>
+<input
+  type="text"
+  class="form-control my-2"
+  list="<%= fieldRaw %>-list"
+  placeholder="<%= fieldHuman %>"
+  name="<%= fieldRaw %>"
+  id="<%= fieldRaw %>-input"
+/>
+<% if (unique) { %>
+<datalist id="<%= fieldRaw %>-list">
+  <% unique.forEach(val => { %>
+  <option value="<%= val %>"><% }) %></option>
+</datalist>
+
+<% } %> <% } %>
