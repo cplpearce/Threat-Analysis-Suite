@@ -27,6 +27,7 @@
     width: 100%;
   }
 </style>
+<%  const reports = records %>
 <script type="text/javascript">
   const map = new ol.Map({
     target: 'map',
@@ -40,6 +41,10 @@
       zoom: 4
     })
   });
+  const records = <%- JSON.stringify(records) %>;
+  console.log(records)
+
+
 </script>
 </body>
 </html>

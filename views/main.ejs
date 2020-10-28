@@ -9,11 +9,67 @@
   <!-- Security Classification -->
   <%- include("partials/_security_classification.ejs", { classification: "Unclassified" }) %>
   
+  <!-- If Alert, display it -->
+  <% if (typeof message !== "undefined") { %>
+    <div class="alert text-center alert-<%= message.style %>" role="alert">
+      <%= message.msg %>
+    </div>
+  <% } %>
   <!-- Main Page Content -->
-  <div class="container mt-5">
-    <h5>Welcome to TAS - the Threat Analysis Suite.</h5>
-      
-      <span id="main-time"></span>
+  <div class="container my-5 d-flex flex-column align-items-center">
+    <div>
+      <h3>Welcome to TAS - the Threat Analysis Suite.</h3>
+        <span id="main-time"></span>
+    </div>
+    <div class="w-75 my-3">
+      <h5 class="col-12 my-3">Stats</h5>
+      <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Total Reports
+          <span class="badge badge-primary badge-pill"><%= reports %></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Your Reports
+          <span class="badge badge-primary badge-pill"><%= myReports %></span>
+        </li>
+      </ul>
+    </div>
+    <div class="row w-75 my-3">
+      <h5 class="col-12 my-3">Contacts</h5>
+          <!-- Local Contact Groups -->
+          <%- include("partials/_main_contacts_group.ejs", { localContacts: localContacts.contacts }) %>
+    </div>
+    <div class="row w-100 my-3">
+      <h5 class="col-12 my-3">TAS Documention & Settings</h5>
+      <div class="row col-12">
+        <div class="col-4">
+          <div class="list-group" id="list-tab" role="tablist">
+            <a class="list-group-item list-group-item-action active" id="list-TAS-list" data-toggle="list" href="#list-TAS" role="tab">TAS Basics</a>
+            <a class="list-group-item list-group-item-action" id="list-Documentation-list" data-toggle="list" href="#list-Documentation" role="tab">TAS Documentation</a>
+            <a class="list-group-item list-group-item-action" id="list-Guides-list" data-toggle="list" href="#list-Guides" role="tab">TAS Guides</a>
+            <a class="list-group-item list-group-item-action" id="list-Setup-list" data-toggle="list" href="#list-Setup" role="tab">TAS Settings</a>
+          </div>
+        </div>
+        <div class="col-8">
+          <div class="tab-content text-left" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="list-TAS" role="tabpanel">
+              <p><strong>TAS - the Threat Analysis Suite</strong> is a small Javascipt & Node powered toolset to enable event and geospatial analysis.</p>
+              <p>TAS utilizes many Javascript libraries to bring basic first line analysis tools to intelligence collators.  These libraries include OpenLayers, Turf, Datatables, and the Bootstrap Framework.</p>
+              <p>TAS allows for record importing from APIs and CSV/Excel files.  More file types will be introduced as TAS expands.</p>
+            </div>
+            <div class="tab-pane fade" id="list-Documentation" role="tabpanel">
+              TAS Documention: TAS features & tabs broken down
+            </div>
+            <div class="tab-pane fade" id="list-Guides" role="tabpanel">
+              TAS guides for adding records, searching, etc. 
+            </div>
+            <div class="tab-pane fade" id="list-Setup" role="tabpanel">
+              Setting up your database, contacts, etc
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
 <script>

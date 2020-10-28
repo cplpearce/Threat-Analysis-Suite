@@ -4,7 +4,11 @@
     <% if (field === "timestamp") { %> 
       <%= new Date(report[field] * 1000).toUTCString() %> 
     <% } else if (!report[field]) { %> 
-      None
+      <% if (field === "fatalities") { %>
+        0
+      <% } else { %>
+        None
+      <% } %>
     <% } else {%>
       <%= report[field] %> 
     <% } %>

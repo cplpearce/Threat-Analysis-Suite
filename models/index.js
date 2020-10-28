@@ -77,10 +77,21 @@ module.exports = (db) => {
       .catch((err) => err);
   };
 
+  const getTargetField = (field, target) => {
+    const query = {
+      text: `SELECT ${field} FROM reports WHERE ${field} = '${target}'`,
+    };
+    return db
+      .query(query)
+      .then((result) => result.rows)
+      .catch((err) => err);
+  };
+
   return {
     getAllReports,
     getUnique,
     addReport,
     getSpecificReports,
+    getTargetField,
   };
 };

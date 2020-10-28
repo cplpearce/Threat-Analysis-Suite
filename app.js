@@ -16,6 +16,8 @@ const db = require("./db");
 const dbHelpers = require("./models")(db);
 // Helper field funcs
 const tblHelpers = require("./helpers/tblFields");
+// Local contact info
+const localContacts = require("./data/contact_information.json");
 
 // I N I T   E X P R E S S
 const app = express();
@@ -81,7 +83,18 @@ app.get("/logout", (req, res) => {
 
 // M A I N
 app.get("/main", (req, res) => {
-  res.render("main");
+  // Add userReports to render...
+  const allReportsPromise = Promise.resolve(dbHelpers.getAllReports());
+  const userReportsPromise = Promise.resolve(
+    dbHelpers.getTargetField("analyst_id", req.cookies.username)
+  );
+  Promise.all([allReportsPromise, userReportsPromise]).then((values) => {
+    res.render("main", {
+      reports: values[0].length,
+      myReports: values[1].length,
+      localContacts,
+    });
+  });
 });
 
 // A D D   R E P O R T
@@ -104,13 +117,23 @@ app.post("/reports/add", (req, res) => {
   Object.keys(req.body).forEach(
     (field) => (req.body[field] = req.body[field] || "None")
   );
-  dbHelpers
-    // INSERT 2 - Interal Report, current user, new report fields
-    .addReport([2, req.cookies.username, ...Object.values(req.body)])
-    .then(() => {
-      // Change to reports/:id when ready
-      res.render("main");
-    });
+  const addReport = Promise.resolve(
+    dbHelpers.addReport([2, req.cookies.username, ...Object.values(req.body)])
+  );
+  const allReportsPromise = Promise.resolve(dbHelpers.getAllReports());
+  const userReportsPromise = Promise.resolve(
+    dbHelpers.getTargetField("analyst_id", req.cookies.username)
+  );
+  Promise.all([allReportsPromise, userReportsPromise, addReport]).then(
+    (values) => {
+      res.render("main", {
+        reports: values[0].length,
+        myReports: values[1].length,
+        localContacts,
+        message: { style: "primary", msg: "Added report successfully!" },
+      });
+    }
+  );
 });
 
 // V I E W   R E P O R T S
