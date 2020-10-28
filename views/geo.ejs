@@ -10,7 +10,7 @@
   <%- include("partials/_security_classification", {classification: "Unclassified"}) %>
   
   <!-- Geo Content -->
-  <h1>Hello World - literally</h1>
+  <div id="analysis-tools"></div>
   <div id="map" class="map"></div>
 
 <!-- View Specific Scripts -->
@@ -21,12 +21,6 @@
 <!-- OpenLayer CSS -->
 <link rel="stylesheet" type="text/css" href="stylesheets/ol.css">
 <!-- OpenLayer Init -->
-<style>
-  .map {
-    height: 86vh;
-    width: 100%;
-  }
-</style>
 <%  const reports = records %>
 <script type="text/javascript">
   const map = new ol.Map({

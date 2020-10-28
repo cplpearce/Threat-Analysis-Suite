@@ -57,7 +57,7 @@ app.post("/login", (req, res, next) => {
     res.cookie("analyst_id", "TAS");
     res.redirect("main");
   } else {
-    res.render("login", { title: "Login", error: "INVALID CREDENTIALS" });
+    res.render("login", { title: "Login", error: "Invalid Credentials" });
   }
 });
 
