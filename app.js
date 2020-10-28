@@ -98,8 +98,15 @@ app.get("/reports/add", (req, res) => {
 
 // POST
 app.post("/reports/add", (req, res) => {
+  // Set the added report date to int timestamp
+  req.body.timestamp = new Date(req.body.timestamp).valueOf() / 1000;
+  // Set empty vals to 'None'
+  Object.keys(req.body).forEach(
+    (field) => (req.body[field] = req.body[field] || "None")
+  );
   dbHelpers
-    .addReport([req.cookies.username, ...Object.values(req.body)])
+    // INSERT 2 - Interal Report, current user, new report fields
+    .addReport([2, req.cookies.username, ...Object.values(req.body)])
     .then(() => {
       // Change to reports/:id when ready
       res.render("main");
@@ -110,7 +117,7 @@ app.post("/reports/add", (req, res) => {
 
 app.get("/reports", (req, res) => {
   dbHelpers
-    .getReports()
+    .getAllReports()
     .then((records) =>
       res.render("view_reports", { reports: records, fieldNames: tblHelpers() })
     );
@@ -128,8 +135,17 @@ app.get("/reports/:id", (req, res) => {
 
 // G E O S P A T I A L   V I E W
 
+// GET
 app.get("/geo", (req, res) => {
   res.render("geo");
+});
+
+// POST
+app.post("/geo", (req, res) => {
+  const reports = req.body.report_ids;
+  dbHelpers.getSpecificReports(reports).then((records) => {
+    res.render("geo", { records, fieldNames: tblHelpers() });
+  });
 });
 
 // S E T T I N G S

@@ -1,35 +1,52 @@
-<% if (fieldRaw === 'notes') { %>
-  <textarea
-  required
-  class="form-control my-2"
-  placeholder="<%= fieldHuman %>"
-  name="<%= fieldRaw %>"
-  id="<%= fieldRaw %>-input"
-  ></textarea>
-<% } else { %>
-  <input 
-  required
-  class="form-control my-2"
-  list="<%= fieldRaw %>-list"
-  placeholder="<%= fieldHuman %>"
-  name="<%= fieldRaw %>"
-  id="<%= fieldRaw %>-input"
-  <%# Change input type by field %>
-  <% if (fieldHuman === 'Timestamp') { %>
-    type="datetime-local" 
-  <% } else if (['Latitude', 'Longitude', 'Fatailities'].includes(fieldHuman)) { %>
-    type="number" 
-  <% } else { %> 
-    type="text"
-  <% } %>
-  />
-  <%# If it has unique vals, add them %>
-  <% if (unique) { %>
-    <datalist id="<%= fieldRaw %>-list">
-      <% unique.forEach(val => { %>
-        <option value="<%= val %>">
-      <% }) %>
-    </datalist>
-  <% } %>
+<%# If % 2, create a new div row %>
+<% if ((index+1) % 2) { %>
+  <div class="row p-4"
+  id="row-<%= (index + 2) / 2 %>"
+  >
+<% } %>
+  <%# Start a new col %>
+  <div class="col mb-1">
+    <h6 class="pl-1 text-left"><%= fieldHuman %></h6>
+    <%# if it's a note field, its textarea, otherwise input %>
+    <% if (fieldRaw === 'notes') { %>
+      <textarea
+      required
+      class="form-control"
+      placeholder="<%= fieldHuman %>"
+      name="<%= fieldRaw %>"
+      id="<%= fieldRaw %>-input"
+      ></textarea>
+    <% } else { %>
+      <input
+      <%# If it's one of the req fields, mark it as so %>
+      <% if (!['assoc_actor_1', 'actor2', 'assoc_actor_2', 'admin2', 'admin3', 'location'].includes(fieldRaw)) { %>
+      required
+      <% } %>
+      class="form-control"
+      placeholder="<%= fieldHuman %>"
+      name="<%= fieldRaw %>"
+      id="<%= fieldRaw %>-input"
+      list="<%= fieldRaw %>-list"
+      <%# Change input type by field %>
+      <% if (fieldHuman === 'Timestamp') { %>
+        type="datetime-local" 
+      <% } else if (['Latitude', 'Longitude', 'Fatailities'].includes(fieldHuman)) { %>
+        type="number" 
+      <% } else { %> 
+        type="text"
+      <% } %>
+      >
+    <% } %>
+    <%# If it has unique vals, add them %>
+    <% if (unique) { %>
+      <datalist id="<%= fieldRaw %>-list">
+        <% unique.forEach(val => { %>
+          <option value="<%= val %>">
+        <% }) %>
+      </datalist>
+    <% } %>
+  </div>
+<% if (index % 2) { %>
+  </div>
 <% } %>
 

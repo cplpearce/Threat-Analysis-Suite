@@ -12,17 +12,17 @@
 
     <!-- View Reports -->
     <div class="d-flex justify-content-center mt-5">
+      <button id="reports-view-geo-btn" class="w-50 btn btn-success d-none">Visualize</button>    
       <div
         id="reports-table-loading"
         class="spinner-border text-primary"
-        role="status"
-      >
+        role="status">
         <span class="sr-only">Loading...</span>
       </div>
     </div>
     <table
       id="reports-table"
-      class="invisible w-100 table table-sm table-bordered table-striped table-hover nowwrap"
+      class="invisible w-100 table table-sm table-bordered table-striped table-hover"
     >
       <thead class="thead-dark">
         <tr>
@@ -64,8 +64,9 @@
     <!-- On load, convert the table to a data table -->
     <script>
       $(document).ready(() => {
-        // Hide the loader and unhind the spinner
+        // Hide the loader and show the table and geo button
         $("#reports-table").removeClass("invisible");
+        $("#reports-view-geo-btn").removeClass("d-none");
         $("#reports-table-loading").remove();
 
         const table = $("#reports-table").DataTable({
@@ -88,12 +89,17 @@
             threshold: 1,
             columns: [4, 5, 6, 8, 13, 14, -1],
           },
+          // Enable route in app.js to put workload on server
+          //serverSide: true,
+          //ajax: {
+          //    url: '/data-source',
+          //    type: 'POST'
+          //}
           dom:
-            "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
-            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'my-2 query-builder col-sm-12 col-md-12 col-lg-12'Q>>" +
+            "<'row'<'float-lg-right col-sm-4 col-md-4 col-lg-9'B><'col-sm-4 col-md-4 col-lg-1'l><'col-sm-4 col-md-4 col-lg-2'f>>" +
             "<'row'<'col-sm-12 col-md-4'i><'col-sm-12 col-md-8'p>>" +
-            "<'row'<'mt-4 col-sm-12 col-md-4'B>>" +
-            "<'row'<'p-2 m-2 query-builder col-sm-12 col-md-12'Q>>",
+            "<'row'<'col-lg-12'tr>>",
           buttons: ["copy", "excel", "csv", "pdf", "print", "colvis"],
         });
 
@@ -104,8 +110,25 @@
         $(function () {
           $('[data-toggle="popover"]').popover({ trigger: "hover" });
         });
+
+        // On table draws, update rows and rebuilt popovers
+        // Current visible rows
+        currentRows = [...table.columns({ search: 'applied' }).data()[0]];
         table.on("draw", function () {
           $('[data-toggle="popover"]').popover({ trigger: "hover" });
+          // Current visible rows
+          currentRows = table.columns({ search: 'applied' }).data()[0];
+        });
+
+         // On geo button click, move to map with data
+        $("#reports-view-geo-btn").click(() => {
+          console.log(currentRows)
+          const form = $(`
+            <form action="/geo" method="post">
+              <input type="text" name="report_ids" value="${currentRows}"/>
+            </form>`);
+          $("body").append(form);
+          form.submit();
         });
       });
     </script>

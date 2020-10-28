@@ -11,18 +11,29 @@
     "Unclassified"}) %>
 
     <!-- Add Report Content -->
-    <div class="my-5 container w-50">
+    <div class="container w-75 my-5">
       <form id="add-new-report" action="/reports/add" method="POST" >
-        <div class="row">
-          <!-- Iterate fields !except notes and id -->
-          <% Object.keys(fieldNames) .filter(field => !['id', 'api_id', 'api_event_id', 'analyst_id'].includes(field)).forEach(fieldRaw => { %>
-            <h5 class="my-2"><%= fieldNames[fieldRaw] %></h5>
-            <%- include("partials/_add_report_field", { fieldHuman: fieldNames[fieldRaw], fieldRaw, unique: unique[fieldRaw] }) %> 
-          <% }) %>
-        </div>
-        <button id="new-report-submit" type="submit" class="btn btn-primary">Submit New Record</button>
-      </div>
-    </form>
+        <!-- Iterate fields !except 'id', 'api_id', 'api_event_id', 'analyst_id' -->
+        <% Object.keys(fieldNames).filter(field => !['id', 'api_id', 'api_event_id', 'analyst_id'].includes(field)).forEach((fieldRaw, index) => { %>
+          <%- include("partials/_add_report_field", { index, fieldHuman: fieldNames[fieldRaw], fieldRaw, unique: unique[fieldRaw] }) %> 
+        <% }) %>
+        <button id="new-report-submit" type="submit" class="mt-3 btn btn-primary">Submit New Record</button>
+      </form>
+    </div>
     <!-- View Specific Scripts -->
+    <script>
+      $("[id^='row-']").each(row => {
+        if (!(row % 2)) {
+          $(`#row-${row}`).css({"background": "#d1d1d1", "border-radius": "10px"})
+        }
+      })
+      $(":input[required]").css("border", "solid #e64949 1px")
+      $(":input[required]").keyup((event) => {
+        console.log(event.target.value)
+        if (event.target.value) {
+          $(`#${event.target.id}`).css("border", "solid #ced4da 1px")
+        }
+      })
+    </script>
   </body>
 </html>

@@ -71,19 +71,16 @@ body {
 }
 
 .truncate {
-  max-width: 300px;
+  max-width: 450px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .popover {
-  font-weight: 800;
+  font-weight: 1000;
 }
 /* A D D   R E P O R T */
-#new-report-notes {
-  height: 150px;
-}
 
 #mceu_0 {
   margin-bottom: 5%;

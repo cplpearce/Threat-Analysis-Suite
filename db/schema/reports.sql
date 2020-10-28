@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS reports CASCADE;
 
 CREATE TABLE reports (
   id SERIAL PRIMARY KEY NOT NULL,
-  api_event_id INTEGER,
+  api_event_id SERIAL,
   api_id SMALLINT,
   analyst_id TEXT NOT NULL,
   event_type TEXT NOT NULL,

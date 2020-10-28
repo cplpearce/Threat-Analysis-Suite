@@ -11,6 +11,7 @@
   
   <!-- Geo Content -->
   <h1>Hello World - literally</h1>
+  <div id="map" class="map"></div>
 
 <!-- View Specific Scripts -->
 <!-- Turf - Geospatial Analysis -->
@@ -19,5 +20,26 @@
 <script type="text/javascript" src="js/ol.js"></script>
 <!-- OpenLayer CSS -->
 <link rel="stylesheet" type="text/css" href="stylesheets/ol.css">
+<!-- OpenLayer Init -->
+<style>
+  .map {
+    height: 86vh;
+    width: 100%;
+  }
+</style>
+<script type="text/javascript">
+  const map = new ol.Map({
+    target: 'map',
+    layers: [
+      new ol.layer.Tile({
+        source: new ol.source.OSM()
+      })
+    ],
+    view: new ol.View({
+      center: ol.proj.fromLonLat([37.41, 8.82]),
+      zoom: 4
+    })
+  });
+</script>
 </body>
 </html>
