@@ -34,11 +34,6 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 // Logger dev
 app.use(logger("dev"));
-// Express use helpers
-
-// T E S T   D A T A
-
-const sigactData = require("./data/IraqSigactSmall.json");
 
 // R O U T E S // M A N A G E   E X P R E S S   R O U T I N G
 
