@@ -26,6 +26,8 @@
 <!-- Leaflet Clustering -->
 <link rel="stylesheet" type="text/css" href="js/leaflet/MarkerCluster.css">
 <link rel="stylesheet" type="text/css" href="js/leaflet/MarkerCluster.Default.css">
+<!-- Leaflet Heatmat -->
+<script type="text/javascript" src="js/leaflet/HeatLayer.js"></script>
 <!-- Leaflet Init -->
 <%  const reports = records %>
 <script type="text/javascript">
@@ -49,7 +51,7 @@
   })
 
   // Add OSM map
-  L.tileLayer('https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png').addTo(map)
+  L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png').addTo(map)
 
   // Create a layer group
   const pointLayer = L.markerClusterGroup();
@@ -64,7 +66,7 @@
     const tBodyRows = Object.keys(rR).map((field, index) => `<tr><td class="p-1 geo-table ${index % 2 ? "off-row" : ""}"><strong>${field.toUpperCase().replace(/_/g, ' ')}</strong>: ${rR[field]}</td></tr>`)
 
     // Set time from timestamp
-    tBodyRows[21] = tBodyRows[21].replace(/\d{10}/, new Date(tBodyRows[21].search(/\d{10}/)))
+    tBodyRows[21] = tBodyRows[21].replace(/\d{10}/, new Date(tBodyRows[21].match(/\d{10}/) * 1000))
 
     // Create the sigact circle marker
     L.circle([rR.latitude, rR.longitude], { 
@@ -72,7 +74,7 @@
       color: 'red',
       riseOnHover: true,
       fillColor: 'red',
-      weight: 10
+      weight: 5
      })
     // Add it to the map
     .addTo(pointLayer)
@@ -86,7 +88,7 @@
       </thead>
     <tbody>${tBodyRows.join('')}</tbody>
     </table>`, { maxWidth: 750 })
-    .bindTooltip(rR.event_type)
+    .bindTooltip(rR.event_type, { textOnly: true })
   })
 
   // Finally add the points to the map
@@ -99,7 +101,6 @@
   L.edgeScaleBar().addTo(map);
 
   // I N I T   T U R F
-
 
 </script>
 </body>

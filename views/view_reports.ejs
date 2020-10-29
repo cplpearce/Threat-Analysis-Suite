@@ -38,7 +38,7 @@
         include("partials/_view_report_table_row", { report, fieldNames }); %>
         <% }) %>
       </tbody>
-      <tfoot>
+      <tfoot class="thead-dark">
         <% Object.keys(fieldNames).forEach(field => { %>
         <th style="vertical-align: middle; text-align: center">
           <%= fieldNames[field] %>
@@ -61,6 +61,8 @@
     />
     <!-- Popper.js -->
     <script type="text/javascript" src="/js/popper.min.js"></script>
+    <!-- Moment.js -->
+    <script type="text/javascript" src="/js/moment.js"></script>
     <!-- On load, convert the table to a data table -->
     <script>
       $(document).ready(() => {
@@ -72,9 +74,7 @@
         const table = $("#reports-table").DataTable({
           // Scroll x plane
           scrollX: true,
-          // Allow column reorder
-          colReorder: true,
-          // Notes column max length 64 char
+          // Notes & source column max length 64 char and generate popup text
           columnDefs: [
             {
               targets: [-4, -3],
@@ -87,7 +87,7 @@
           // Add search panes for 5 columns
           searchPanes: {
             threshold: 1,
-            columns: [4, 5, 6, 8, 12, 14, -1],
+            columns: [4, 5, 6, 8, 12, 15],
           },
           // Enable route in app.js to put workload on server
           //serverSide: true,
@@ -97,11 +97,14 @@
           //}
           dom:
             "<'row'<'my-2 query-builder col-sm-12 col-md-12 col-lg-12'Q>>" +
+            "<'row'<'my-2 date-picker-container row col-sm-12 col-md-12 col-lg-12'>>" +
             "<'row'<'float-lg-right col-sm-4 col-md-4 col-lg-9'B><'col-sm-4 col-md-4 col-lg-1'l><'col-sm-4 col-md-4 col-lg-2'f>>" +
             "<'row'<'col-sm-12 col-md-4'i><'col-sm-12 col-md-8'p>>" +
             "<'row'<'col-lg-12'tr>>",
+
+          // B U T T O N S
           buttons: ["copy", "excel", "csv", "pdf", "print", "colvis", { text: 'Toggle Search Panes', action: () => 
-      $(".dtsp-container").fadeToggle()}],
+      $(".dtsp-container").fadeToggle()}, { text: 'Toggle Query Builder', action: () => $(".query-builder").fadeToggle()}],
         });
 
         // Add the search panes to the table top
@@ -123,7 +126,6 @@
 
          // On geo button click, move to map with data
         $("#reports-view-geo-btn").click(() => {
-          console.log(currentRows)
           const form = $(`
             <form action="/geo" method="post">
               <input type="text" name="report_ids" value="${currentRows}"/>
@@ -131,6 +133,45 @@
           $("body").append(form);
           form.submit();
         });
+
+        // Add date pickers
+        $(".date-picker-container").html(
+          `
+          <div class="input-group input-date-range col-6">
+            <div class="input-group-prepend">
+              <span class="input-group-text">From date:</span>
+            </div>
+            <input type="date" id="min-date" class="form-control date-range-filter" data-date-format="yyyy-mm-dd">
+          </div> 
+          <div class="input-group input-date-range col-6">
+            <div class="input-group-prepend">
+              <span class="input-group-text">To date:</span>
+            </div> 
+            <input type="date" id="max-date" class="form-control date-range-filter" data-date-format="yyyy-mm-dd">
+          </div>
+          `
+        )
+        
+        // Extend dataTables search
+        $.fn.dataTable.ext.search.push(
+          function(settings, searchData, index, rowData, counter) {
+            const min = $('#min-date').val();
+            const max = $('#max-date').val();
+            const timestamp = searchData[21];
+            console.log(timestamp[0])
+
+            if (
+              (!min || !max) ||
+              (moment(timestamp).isSameOrAfter(min) && moment(timestamp).isSameOrBefore(max))
+            ) {
+              return true;
+            }
+            return false;
+          }
+        );
+
+        // Re-draw the table when the a date range filter changes
+        $('.date-range-filter').change(() => table.draw());
       });
 
     </script>
