@@ -100,7 +100,8 @@
             "<'row'<'float-lg-right col-sm-4 col-md-4 col-lg-9'B><'col-sm-4 col-md-4 col-lg-1'l><'col-sm-4 col-md-4 col-lg-2'f>>" +
             "<'row'<'col-sm-12 col-md-4'i><'col-sm-12 col-md-8'p>>" +
             "<'row'<'col-lg-12'tr>>",
-          buttons: ["copy", "excel", "csv", "pdf", "print", "colvis"],
+          buttons: ["copy", "excel", "csv", "pdf", "print", "colvis", { text: 'Toggle Search Panes', action: () => 
+      $(".dtsp-container").fadeToggle()}],
         });
 
         // Add the search panes to the table top
@@ -131,6 +132,7 @@
           form.submit();
         });
       });
+
     </script>
   </body>
 </html>

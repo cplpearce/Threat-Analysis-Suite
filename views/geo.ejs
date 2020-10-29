@@ -10,33 +10,95 @@
   <%- include("partials/_security_classification", {classification: "Unclassified"}) %>
   
   <!-- Geo Content -->
-  <div id="analysis-tools"></div>
   <div id="map" class="map"></div>
 
 <!-- View Specific Scripts -->
 <!-- Turf - Geospatial Analysis -->
 <script type="text/javascript" src="js/turf.min.js"></script>
-<!-- OpenLayers - Geospatial Layer -->
-<script type="text/javascript" src="js/ol.js"></script>
-<!-- OpenLayer CSS -->
-<link rel="stylesheet" type="text/css" href="stylesheets/ol.css">
-<!-- OpenLayer Init -->
+<!-- Leaflet - Geospatial Layer -->
+<script type="text/javascript" src="js/leaflet/leaflet.js"></script>
+<!-- Leaflet - Clustering -->
+<script type="text/javascript" src="js/leaflet/leaflet.markercluster.js"></script>
+<!-- Leaflet scale bar -->
+<script type="text/javascript" src="js/leaflet/leaflet.edgescalebar.js"></script>
+<!-- Leaflet CSS -->
+<link rel="stylesheet" type="text/css" href="js/leaflet/leaflet.css">
+<!-- Leaflet Clustering -->
+<link rel="stylesheet" type="text/css" href="js/leaflet/MarkerCluster.css">
+<link rel="stylesheet" type="text/css" href="js/leaflet/MarkerCluster.Default.css">
+<!-- Leaflet Init -->
 <%  const reports = records %>
 <script type="text/javascript">
-  const map = new ol.Map({
-    target: 'map',
-    layers: [
-      new ol.layer.Tile({
-        source: new ol.source.OSM()
-      })
-    ],
-    view: new ol.View({
-      center: ol.proj.fromLonLat([37.41, 8.82]),
-      zoom: 4
-    })
-  });
+
+  // C O L L E C T   V A R S 
+
+  // Import reports from EJS
   const records = <%- JSON.stringify(records) %>;
-  console.log(records)
+
+  // I N I T   L E A F L E T
+
+  // Init a new map object
+  const map = L.map('map').setView([33.2232,43.6793], 6);
+
+  // Create a new icon style
+  const sigactIcon = L.icon({
+    iconUrl: 'img/bxs-map.svg',
+    iconSize: [32, 32],
+    shadowSize: [50, 64],
+    shadowAnchor: [4, 62],
+  })
+
+  // Add OSM map
+  L.tileLayer('https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png').addTo(map)
+
+  // Create a layer group
+  const pointLayer = L.markerClusterGroup();
+
+  // Add points
+  Object.keys(records).forEach(record => {
+
+    // Assign short var name
+    const rR = records[record];
+
+    // Create virtual table rows
+    const tBodyRows = Object.keys(rR).map((field, index) => `<tr><td class="p-1 geo-table ${index % 2 ? "off-row" : ""}"><strong>${field.toUpperCase().replace(/_/g, ' ')}</strong>: ${rR[field]}</td></tr>`)
+
+    // Set time from timestamp
+    tBodyRows[21] = tBodyRows[21].replace(/\d{10}/, new Date(tBodyRows[21].search(/\d{10}/)))
+
+    // Create the sigact circle marker
+    L.circle([rR.latitude, rR.longitude], { 
+      radius: 50,
+      color: 'red',
+      riseOnHover: true,
+      fillColor: 'red',
+      weight: 10
+     })
+    // Add it to the map
+    .addTo(pointLayer)
+    // Add a popup
+    .bindPopup(`
+    <table class="geo-table">
+      <thead class="thead-dark">
+        <td class="text-center">
+          <strong>Point Data</strong>
+        </td>
+      </thead>
+    <tbody>${tBodyRows.join('')}</tbody>
+    </table>`, { maxWidth: 750 })
+    .bindTooltip(rR.event_type)
+  })
+
+  // Finally add the points to the map
+  pointLayer.addTo(map)
+
+  // And zoom to it :)
+  map.fitBounds(pointLayer.getBounds().pad(0.5));
+
+  // Add a scalebar
+  L.edgeScaleBar().addTo(map);
+
+  // I N I T   T U R F
 
 
 </script>
