@@ -31,7 +31,7 @@ app.use(express.static("public"));
 // Parse cookies
 app.use(cookieParser());
 // Parse req bodies
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 // Logger dev
 app.use(logger("dev"));
 
@@ -139,6 +139,13 @@ app.get("/reports", (req, res) => {
     .then((records) =>
       res.render("view_reports", { reports: records, fieldNames: tblHelpers() })
     );
+});
+
+app.get("/api/reports", (req, res) => {
+  dbHelpers.getAllReports().then((data) => {
+    data = { data: data.map((record) => Object.values(record).flat()) };
+    res.send({ data: data.data });
+  });
 });
 
 // V I E W   R E P O R T

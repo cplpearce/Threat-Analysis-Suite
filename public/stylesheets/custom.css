@@ -98,6 +98,12 @@ body {
   max-width: 750px;
 }
 
+.geo-table-popup {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
+}
+
 .off-row {
   background-color: rgb(197, 194, 194);
   border-radius: 10px;
@@ -109,4 +115,12 @@ body {
 
 .pointTooltip {
   background-color: aqua;
+}
+
+.easyPrintHolder .geoCurrentXY {
+  background-image: url("../img/tasmanian-devil.png");
+}
+
+.leaflet-tooltip td {
+  max-width: 250px;
 }

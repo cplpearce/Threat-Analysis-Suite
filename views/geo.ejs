@@ -17,17 +17,22 @@
 <script type="text/javascript" src="js/turf.min.js"></script>
 <!-- Leaflet - Geospatial Layer -->
 <script type="text/javascript" src="js/leaflet/leaflet.js"></script>
-<!-- Leaflet - Clustering -->
-<script type="text/javascript" src="js/leaflet/leaflet.markercluster.js"></script>
-<!-- Leaflet scale bar -->
-<script type="text/javascript" src="js/leaflet/leaflet.edgescalebar.js"></script>
-<!-- Leaflet CSS -->
 <link rel="stylesheet" type="text/css" href="js/leaflet/leaflet.css">
+<!-- Leaflet scale bar -->
+<script type="text/javascript" src="js/leaflet/L.Control.BetterScale.js"></script>
+<link rel="stylesheet" type="text/css" href="js/leaflet/L.Control.BetterScale.css">
 <!-- Leaflet Clustering -->
+<script type="text/javascript" src="js/leaflet/leaflet.markercluster.js"></script>
 <link rel="stylesheet" type="text/css" href="js/leaflet/MarkerCluster.css">
 <link rel="stylesheet" type="text/css" href="js/leaflet/MarkerCluster.Default.css">
-<!-- Leaflet Heatmat -->
-<script type="text/javascript" src="js/leaflet/HeatLayer.js"></script>
+<!-- Leaflet Select -->
+<script type="text/javascript" src="js/leaflet/Leaflet.PolylineMeasure.js"></script>
+<link rel="stylesheet" type="text/css" href="js/leaflet/Leaflet.PolylineMeasure.css">
+<!-- Screenshots -->
+<script type="text/javascript" src='js/leaflet/bundle.js'></script>
+<!-- Selecting -->
+<script type="text/javascript" src='js/leaflet/leaflet-lasso.umd.min.js'></script>
+
 <!-- Leaflet Init -->
 <%  const reports = records %>
 <script type="text/javascript">
@@ -37,11 +42,23 @@
   // Import reports from EJS
   const records = <%- JSON.stringify(records) %>;
 
+  // Color array to style marker icons 
+  const colors = ['red', 'blue', 'green', 'yellow', 'organge', 'brown',]
+
+  // Unique Event types
+  const uniqueEventTypes = [];
+  records.forEach(record => {
+    if (!uniqueEventTypes.includes(record.event_type)){
+      uniqueEventTypes.push(record.event_type)
+    }
+  })
+
   // I N I T   L E A F L E T
 
   // Init a new map object
-  const map = L.map('map').setView([33.2232,43.6793], 6);
+  const map = L.map('map', {  preferCanvas: true }).setView([33.2232,43.6793], 6);
 
+  // If you elect to use an icon do so here
   // Create a new icon style
   const sigactIcon = L.icon({
     iconUrl: 'img/bxs-map.svg',
@@ -51,10 +68,13 @@
   })
 
   // Add OSM map
-  L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png').addTo(map)
+  L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+    // If your map has an access token/api key enter it here
+    // accessToken: 'my-key'
+  }).addTo(map)
 
   // Create a layer group
-  const pointLayer = L.markerClusterGroup();
+  const pointLayer = L.markerClusterGroup({ maxClusterRadius: 100 });
 
   // Add points
   Object.keys(records).forEach(record => {
@@ -68,13 +88,17 @@
     // Set time from timestamp
     tBodyRows[21] = tBodyRows[21].replace(/\d{10}/, new Date(tBodyRows[21].match(/\d{10}/) * 1000))
 
+    // Event color
+    const color = colors[uniqueEventTypes.indexOf(rR.event_type)];
     // Create the sigact circle marker
-    L.circle([rR.latitude, rR.longitude], { 
-      radius: 50,
-      color: 'red',
+    L.circleMarker([rR.latitude, rR.longitude], { 
+      // Radius == meters
+      radius: 10,
+      color: 'white',
+      fillOpacity: .9,
       riseOnHover: true,
-      fillColor: 'red',
-      weight: 5
+      fillColor: color,
+      weight: 2
      })
     // Add it to the map
     .addTo(pointLayer)
@@ -88,7 +112,15 @@
       </thead>
     <tbody>${tBodyRows.join('')}</tbody>
     </table>`, { maxWidth: 750 })
-    .bindTooltip(rR.event_type, { textOnly: true })
+    .bindTooltip(`
+    <table class="geo-table-popup">
+      <thead class="thead-dark">
+        <td class="text-center">
+          <small>Point Data</small>
+        </td>
+      </thead>
+    <tbody>${tBodyRows.join('')}</tbody>
+    </table>`, { sticky: true, opacity: .7 })
   })
 
   // Finally add the points to the map
@@ -98,7 +130,40 @@
   map.fitBounds(pointLayer.getBounds().pad(0.5));
 
   // Add a scalebar
-  L.edgeScaleBar().addTo(map);
+  L.control.betterscale().addTo(map);
+
+  // Measure
+  L.control.polylineMeasure({
+    position:'topleft',
+    unit:'metres',
+    showBearings:true,
+    clearMeasurementsOnStop: false,
+    showClearControl: true,
+    showUnitControl: true
+  }
+  ).addTo(map);
+
+  const tD = new Date();
+  const dateString = `${tD.getUTCDate()}-${tD.getUTCMonth()}`;
+
+  // Save map
+  const currentView = { 
+    width: $("#map").width(),
+     name: 'Current View',
+     height: $("#map").height(),
+     className: 'geoCurrentXY',
+     tooltip: 'Current View Port'
+  }
+
+  L.easyPrint({
+    title: 'Print Map',
+    position: 'topleft',
+    exportOnly: true,
+    hideControlContainer: false,
+    hideClasses: ['leaflet-control-container'],
+    filename: `TAS-Map-Export-${dateString}`,
+    sizeModes: ['A4Portrait', 'A4Landscape', currentView]
+  }).addTo(map);
 
   // I N I T   T U R F
 
