@@ -18,22 +18,22 @@
 <!-- Leaflet - Geospatial Layer -->
 <script type="text/javascript" src="js/leaflet/leaflet.js"></script>
 <link rel="stylesheet" type="text/css" href="js/leaflet/leaflet.css">
-<!-- Leaflet scale bar -->
-<script type="text/javascript" src="js/leaflet/L.Control.BetterScale.js"></script>
-<link rel="stylesheet" type="text/css" href="js/leaflet/L.Control.BetterScale.css">
 <!-- Leaflet Clustering -->
 <script type="text/javascript" src="js/leaflet/leaflet.markercluster.js"></script>
 <link rel="stylesheet" type="text/css" href="js/leaflet/MarkerCluster.css">
 <link rel="stylesheet" type="text/css" href="js/leaflet/MarkerCluster.Default.css">
-<!-- Leaflet Select -->
+<!-- Leaflet Measure -->
 <script type="text/javascript" src="js/leaflet/Leaflet.PolylineMeasure.js"></script>
 <link rel="stylesheet" type="text/css" href="js/leaflet/Leaflet.PolylineMeasure.css">
 <!-- Screenshots -->
 <script type="text/javascript" src='js/leaflet/bundle.js'></script>
-<!-- Selecting -->
-<script type="text/javascript" src='js/leaflet/leaflet-lasso.umd.min.js'></script>
+<!-- Leaflet Search -->
+<script type="text/javascript" src="js/leaflet/leaflet-search.js"></script>
+<link rel="stylesheet" type="text/css" href="js/leaflet/leaflet-search.css">
 
-<!-- Leaflet Init -->
+<!-- L E A F L E T   I N I T -->
+
+<!-- Convert EJS var to js -->
 <%  const reports = records %>
 <script type="text/javascript">
 
@@ -43,10 +43,11 @@
   const records = <%- JSON.stringify(records) %>;
 
   // Color array to style marker icons 
-  const colors = ['red', 'blue', 'green', 'yellow', 'organge', 'brown',]
+  const colors = ['red', 'blue', 'green', 'yellow', 'orange', 'brown', 'cyan', 'purple', 'white']
 
   // Unique Event types
   const uniqueEventTypes = [];
+  // Add each unique event
   records.forEach(record => {
     if (!uniqueEventTypes.includes(record.event_type)){
       uniqueEventTypes.push(record.event_type)
@@ -56,7 +57,7 @@
   // I N I T   L E A F L E T
 
   // Init a new map object
-  const map = L.map('map', {  preferCanvas: true }).setView([33.2232,43.6793], 6);
+  const map = L.map('map', {  preferCanvas: true })
 
   // If you elect to use an icon do so here
   // Create a new icon style
@@ -76,7 +77,7 @@
   // Create a layer group
   const pointLayer = L.markerClusterGroup({ maxClusterRadius: 100 });
 
-  // Add points
+  // S T A R T   M A R K E R   G E N E R A T I O N
   Object.keys(records).forEach(record => {
 
     // Assign short var name
@@ -93,6 +94,7 @@
     // Create the sigact circle marker
     L.circleMarker([rR.latitude, rR.longitude], { 
       // Radius == meters
+      title: rR.id,
       radius: 10,
       color: 'white',
       fillOpacity: .9,
@@ -123,6 +125,8 @@
     </table>`, { sticky: true, opacity: .7 })
   })
 
+  // E N D S   M A R K E R   G E N E R A T I O N
+
   // Finally add the points to the map
   pointLayer.addTo(map)
 
@@ -130,7 +134,7 @@
   map.fitBounds(pointLayer.getBounds().pad(0.5));
 
   // Add a scalebar
-  L.control.betterscale().addTo(map);
+  L.control.scale({ metric: true, maxWidth: 200, opacity: 1 }).addTo(map);
 
   // Measure
   L.control.polylineMeasure({
@@ -146,7 +150,7 @@
   const tD = new Date();
   const dateString = `${tD.getUTCDate()}-${tD.getUTCMonth()}`;
 
-  // Save map
+  // Save screenshot
   const currentView = { 
     width: $("#map").width(),
      name: 'Current View',
@@ -165,8 +169,27 @@
     sizeModes: ['A4Portrait', 'A4Landscape', currentView]
   }).addTo(map);
 
-  // I N I T   T U R F
+  // Legend
+  const legend = L.control();
 
+  legend.onAdd = function (map) {
+      this._div = L.DomUtil.create('div', 'legend p-3');
+      this._div.innerHTML = `
+        <h6>Legend</h6>
+        ${uniqueEventTypes.map((event, index) => `
+            <span class="geo-dot" style="background-color: ${colors[index]}"class="dot"></span>&nbsp;&nbsp;&nbsp;${event}
+          <br>
+        `).join('')}
+      `
+      return this._div;
+  };
+
+  legend.addTo(map);
+
+  // Search
+  map.addControl( new L.Control.Search({ layer: pointLayer }) )
+
+ 
 </script>
 </body>
 </html>

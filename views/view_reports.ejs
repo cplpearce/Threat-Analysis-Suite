@@ -179,6 +179,11 @@
           }
         );
 
+        // Start with both query tools hidden
+        $(".query-builder").fadeToggle();
+        $(".dtsp-container").fadeToggle();
+
+
         // Re-draw the table when the a date range filter changes
         $('.date-range-filter').change(() => table.draw());
       });

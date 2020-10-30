@@ -124,3 +124,18 @@ body {
 .leaflet-tooltip td {
   max-width: 250px;
 }
+
+.geo-dot {
+  height: 0.7em;
+  width: 0.7em;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend {
+  background-color: rgb(44, 44, 44);
+  font-family: "Ubuntu";
+  color: white;
+  line-height: 1em;
+  border-radius: 5px;
+}
