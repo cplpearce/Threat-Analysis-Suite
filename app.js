@@ -45,24 +45,25 @@ app.get("/login", (req, res, next) => {
 });
 
 // POST
-app.post("/login", (req, res, next) => {
-  const reqVars = req.body;
-  if (reqVars.username === "admin" && reqVars.pin === "1234") {
-    res.cookie("username", reqVars.username);
-    res.cookie("analyst_id", "TAS");
-    res.redirect("main");
-  } else {
-    res.render("login", { title: "Login", error: "Invalid Credentials" });
-  }
+app.post("/login", (req, res) => {
+  dbHelpers.getUsername(req.body.username).then((userObj) => {
+    console.log(userObj);
+    console.log(req.body);
+    if (Number(req.body.pin) === userObj[0].user_pin) {
+      res.cookie("analyst_id", userObj[0].user_name);
+      res.redirect("main");
+    } else {
+      res.render("login", { error: "Invalid Credentials" });
+    }
+  });
 });
 
 // A C C E S S   C O N T R O L // L I M I T   A C C E S S
 
 // G E T   U S E R
 app.use((req, res, next) => {
-  if (typeof req.cookies.username !== "undefined") {
-    res.locals.user = req.cookies.username;
-    res.locals.aid = "aid-1";
+  if (typeof req.cookies.analyst_id !== "undefined") {
+    res.locals.analyst_id = req.cookies.analyst_id;
     next();
   } else {
     res.render("login");
@@ -72,7 +73,7 @@ app.use((req, res, next) => {
 // L O G O U T
 
 app.get("/logout", (req, res) => {
-  res.clearCookie("username");
+  res.clearCookie("analyst_id");
   res.redirect("login");
 });
 
@@ -111,11 +112,11 @@ app.post("/reports/add", (req, res) => {
     (field) => (req.body[field] = req.body[field] || "None")
   );
   const addReport = Promise.resolve(
-    dbHelpers.addReport([2, req.cookies.username, ...Object.values(req.body)])
+    dbHelpers.addReport([2, req.cookies.analyst_id, ...Object.values(req.body)])
   );
   const allReportsPromise = Promise.resolve(dbHelpers.getAllReports());
   const userReportsPromise = Promise.resolve(
-    dbHelpers.getTargetField("analyst_id", req.cookies.username)
+    dbHelpers.getTargetField("analyst_id", req.cookies.analyst_id)
   );
   Promise.all([allReportsPromise, userReportsPromise, addReport]).then(
     (values) => {
@@ -149,11 +150,13 @@ app.get("/api/reports", (req, res) => {
 // V I E W   R E P O R T
 
 app.get("/reports/:id", (req, res) => {
-  res.render(
-    "report",
-    { report_id: req.paramas.id },
-    { fieldNames: tblHelpers() }
-  );
+  dbHelpers.getSpecificReports(req.body.id).then((report) => {
+    res.render(
+      "view_report",
+      { report_id: req.paramas.id },
+      { fieldNames: tblHelpers() }
+    );
+  });
 });
 
 // G E O S P A T I A L   V I E W

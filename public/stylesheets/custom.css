@@ -71,14 +71,15 @@ body {
 }
 
 .truncate {
-  max-width: 450px;
+  max-width: 400px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .popover {
-  font-weight: 1000;
+  font-family: "Ubuntu";
+  font-weight: 700;
 }
 /* A D D   R E P O R T */
 

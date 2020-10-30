@@ -6,7 +6,7 @@
     </div>  
     <ul class="nav justify-content-end">
       <div class="btn-group" role="group">
-        <% if (typeof user !== "undefined") { %>
+        <% if (typeof analyst_id !== "undefined") { %>
           <a href="/main" role="button" class="btn btn-light">Main</a>
           <div class="btn-group" role="group">
             <button id="reports-dropdown" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -21,7 +21,7 @@
           <a href="/api" role="button" class="btn btn-warning">APIs</a>
           <a href="/settings" role="button" class="btn btn-info">Settings</a>
         <% } %>
-        <% if (typeof user !== "undefined") { %>
+        <% if (typeof analyst_id !== "undefined") { %>
           <a href="/logout" role="button" class="btn btn-danger">Logout</a>
           <% } else { %>
           <a href="/login" role="button" class="btn btn-info">Login</a>

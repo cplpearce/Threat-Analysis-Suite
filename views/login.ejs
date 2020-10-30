@@ -25,7 +25,7 @@
       </div>
       <div class="form-group text-center">
         <label for="login-pin">PIN</label>
-        <input required name="pin" type="password" class="form-control login-field" id="login-pin" maxlength="4">
+        <input required name="pin" pattern="[0-9]*" inputmode="numeric" minlength="4" maxlength="4" type="password" class="form-control login-field" id="login-pin" maxlength="4">
       </div>
       <button id="login-submit" type="submit" class="btn btn-primary">Submit</button>
     </form>

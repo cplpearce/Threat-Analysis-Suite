@@ -13,7 +13,8 @@ module.exports = (db) => {
       .then((result) => result.rows)
       .catch((err) => err);
   };
-  // G E T   U N I Q U E   V A R S
+
+  // G E T   U N I Q U E   V A L S
   const getUnique = () => {
     const fields = [
       "event_type",
@@ -67,6 +68,7 @@ module.exports = (db) => {
     return db.query(query);
   };
 
+  // P U L L   S P E C I F I C   R E P O R T S   B Y   I D
   const getSpecificReports = (ids) => {
     const query = {
       text: `SELECT * FROM reports WHERE id = ANY(ARRAY[${ids}])`,
@@ -77,9 +79,21 @@ module.exports = (db) => {
       .catch((err) => err);
   };
 
-  const getTargetField = (field, target) => {
+  // G E T   S P E C I F I C   R E P O R T S    B Y   F I E L D   &   V A L U E
+  const getTargetField = (field, data) => {
     const query = {
-      text: `SELECT ${field} FROM reports WHERE ${field} = '${target}'`,
+      text: `SELECT ${field} FROM reports WHERE ${field} = '${data}'`,
+    };
+    return db
+      .query(query)
+      .then((result) => result.rows)
+      .catch((err) => err);
+  };
+
+  // G E T   U S E R   L O G I N S
+  const getUsername = (user) => {
+    const query = {
+      text: `SELECT * FROM users WHERE user_name = '${user}'`,
     };
     return db
       .query(query)
@@ -93,5 +107,6 @@ module.exports = (db) => {
     addReport,
     getSpecificReports,
     getTargetField,
+    getUsername,
   };
 };
