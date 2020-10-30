@@ -4,6 +4,7 @@ module.exports = () => {
     api_event_id: "API Event ID",
     api_id: "API ID",
     analyst_id: "Analyst ID",
+    event_date: "Event Date",
     event_type: "Event Type",
     sub_event_type: "Sub Event Type",
     actor1: "Actor 1",
@@ -21,7 +22,6 @@ module.exports = () => {
     source: "Source",
     notes: "Notes",
     fatalities: "Fatalities",
-    timestamp: "Timestamp",
   };
   return fieldNames;
 };

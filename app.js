@@ -31,7 +31,7 @@ app.use(express.static("public"));
 // Parse cookies
 app.use(cookieParser());
 // Parse req bodies
-app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "500mb" }));
 // Logger dev
 app.use(logger("dev"));
 
@@ -106,8 +106,6 @@ app.get("/reports/add", (req, res) => {
 
 // POST
 app.post("/reports/add", (req, res) => {
-  // Set the added report date to int timestamp
-  req.body.timestamp = new Date(req.body.timestamp).valueOf() / 1000;
   // Set empty vals to 'None'
   Object.keys(req.body).forEach(
     (field) => (req.body[field] = req.body[field] || "None")

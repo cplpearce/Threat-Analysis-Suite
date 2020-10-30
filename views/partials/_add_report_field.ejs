@@ -1,5 +1,20 @@
 <%# If % 2, create a new div row %>
-<% if ((index+1) % 2) { %>
+<% if (index === 0) { %>
+<div class="row p-4">
+  <div class="col mb-1">
+    <h6 class="pl-1 text-left">Event Date</h6>
+    <input
+      required
+      class="form-control"
+      type="date"
+      placeholder="Event Date"
+      name="event_date"
+      id="event_date-input"
+    >
+  </div>
+</div>
+<% } %>
+<% if ((index + 1) % 2) { %>
   <div class="row p-4"
   id="row-<%= (index + 2) / 2 %>"
   >
@@ -28,9 +43,7 @@
       id="<%= fieldRaw %>-input"
       list="<%= fieldRaw %>-list"
       <%# Change input type by field %>
-      <% if (fieldHuman === 'Timestamp') { %>
-        type="datetime-local" 
-      <% } else if (['Latitude', 'Longitude', 'Fatailities'].includes(fieldHuman)) { %>
+      <% if (['Latitude', 'Longitude', 'Fatailities'].includes(fieldHuman)) { %>
         type="number" 
       <% } else { %> 
         type="text"
@@ -49,4 +62,3 @@
 <% if (index % 2) { %>
   </div>
 <% } %>
-

@@ -14,7 +14,7 @@
     <div class="container w-75 my-5">
       <form id="add-new-report" action="/reports/add" method="POST" >
         <!-- Iterate fields !except 'id', 'api_id', 'api_event_id', 'analyst_id' -->
-        <% Object.keys(fieldNames).filter(field => !['id', 'api_id', 'api_event_id', 'analyst_id'].includes(field)).forEach((fieldRaw, index) => { %>
+        <% Object.keys(fieldNames).filter(field => !['id', 'event_date', 'api_id', 'api_event_id', 'analyst_id'].includes(field)).forEach((fieldRaw, index) => { %>
           <%- include("partials/_add_report_field", { index, fieldHuman: fieldNames[fieldRaw], fieldRaw, unique: unique[fieldRaw] }) %> 
         <% }) %>
         <button id="new-report-submit" type="submit" class="mt-3 btn btn-primary">Submit New Record</button>
@@ -28,8 +28,7 @@
         }
       })
       $(":input[required]").css("border", "solid #e64949 1px")
-      $(":input[required]").keyup((event) => {
-        console.log(event.target.value)
+      $(":input[required]").change((event) => {
         if (event.target.value) {
           $(`#${event.target.id}`).css("border", "solid #ced4da 1px")
         }

@@ -5,6 +5,7 @@ CREATE TABLE reports (
   api_event_id SERIAL,
   api_id SMALLINT,
   analyst_id TEXT NOT NULL,
+  event_date DATE NOT NULL,
   event_type TEXT NOT NULL,
   sub_event_type TEXT NOT NULL,
   actor1 TEXT NOT NULL,
@@ -21,6 +22,5 @@ CREATE TABLE reports (
   longitude FLOAT NOT NULL,
   source TEXT NOT NULL,
   notes TEXT NOT NULL,
-  fatalities INTEGER NOT NULL,
-  timestamp INTEGER NOT NULL
-)
+  fatalities INTEGER NOT NULL
+);
