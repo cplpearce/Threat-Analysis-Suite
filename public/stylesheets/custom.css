@@ -37,6 +37,7 @@ body {
 }
 
 /* R E P O R T   T A B L E */
+
 .title-case {
   text-transform: capitalize;
 }
@@ -139,4 +140,17 @@ body {
   color: white;
   line-height: 1em;
   border-radius: 5px;
+}
+
+/* Import File */
+.import-cell {
+  font-size: 0.7em;
+  max-width: 124px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.import-table {
+  max-width: 90vw;
 }

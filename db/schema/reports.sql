@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS reports CASCADE;
 CREATE TABLE reports (
   id SERIAL PRIMARY KEY NOT NULL,
   api_event_id SERIAL,
-  api_id SMALLINT,
+  api_name TEXT NOT NULL,
   analyst_id TEXT NOT NULL,
   event_date DATE NOT NULL,
   event_type TEXT NOT NULL,
@@ -22,5 +22,6 @@ CREATE TABLE reports (
   longitude FLOAT NOT NULL,
   source TEXT NOT NULL,
   notes TEXT NOT NULL,
-  fatalities INTEGER NOT NULL
+  fatalities INTEGER NOT NULL,
+  import_date TIMESTAMP DEFAULT NOW()
 );

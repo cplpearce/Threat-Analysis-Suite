@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head partial -->
+<%- include("partials/_head.ejs", { page: "File Import" }) %>
+<body>
+  <!-- Nav Partial -->
+  <%- include("partials/_nav.ejs") %>
+
+  <!-- Security Classification -->
+  <%- include("partials/_security_classification.ejs", { classification: "Unclassified" }) %>
+  
+  <!-- Importer Page Content -->
+  <div class="container mt-5 d-flex flex-column align-content-center align-items-center">
+    <h3>Importing a CSV File</h3>
+    <strong>In order to import a CSV successfully to TAS it must follow this schema:</strong>
+    <table class="table table-bordered my-2" style="white-space: nowrap; font-size: .7em;">
+      <% Object.keys(tableCols).splice(1)
+      .filter(col => !['api_id', 'analyst_id', 'api_name'].includes(col))
+      .forEach(field => { %>
+        <td 
+        data-toggle="popover"
+        data-trigger="focus"
+        data-placement="top"
+        tabindex="0"
+        data-content="<%= tableCols[field].humanName %> - <%= tableCols[field].description %>"
+        >
+          <%= tableCols[field].fieldName %>
+        </td>
+      <% }) %>
+    </table>
+    <h3 class="my-2">Select Your CSV File</h3>
+    <strong>A preview will build after selecting a file.</strong>
+    <form class="table table-sm w-50">
+      <div class="input-group my-2">
+        <div class="input-group-prepend">
+          <span class="input-group-text">CSV</span>
+        </div>
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" accept=".csv" id="csv-input">
+          <label class="custom-file-label" for="csv-input"></label>
+        </div>
+      </div>
+      <button id="import-submit" type="submit" class="btn btn-primary my-2 w-100">Import</button>
+    </form>
+    <div id="data-preview">
+    </div>
+  </div>
+
+  <!-- S C R I P T S -->
+  <!-- CSV Parser -->
+  <script type="text/javascript" src="js/papaparse.min.js"></script>
+
+  <script>
+    $(document).ready(() => {
+      // Initiate popovers
+      $(function () {
+        $('[data-toggle="popover"]').popover({ trigger: "hover" });
+      });
+    })
+    // CSV results
+    let csvContents = {};
+    // Get input element
+    const inputElement = document.getElementById("csv-input");
+    // Add file listener
+    inputElement.addEventListener("change", handleCSV, false);
+    function handleCSV() {
+      // Get the CSV
+      const csv = this.files[0];
+      // Use papaparse to read the csv
+      const data = Papa.parse(csv, {
+        complete: function(results) {
+          csvContents = results;
+          $("#data-preview").html(`
+          <small>10 example records from your CSV.</small>
+          <table class="table table-bordered table-sm mb-5 import-table">
+            <thead class="thead-dark" style="font-size: .7em">
+              <tr>
+                ${results.data[0].map(record => {
+                  return `<th>${record}</th>`
+                }).join('')}
+              </tr>
+            </thead>
+            <tbody>
+                ${results.data.splice(1, 10).map(record => {
+                  return `
+                  <tr>
+                    ${record.map(rec => {
+                      return `<td class="import-cell">${rec}</td>`
+                    }).join('')}
+                  </tr>`;
+                }).join('')}
+            </tbody>
+          </table>            
+          `)
+        }
+      });
+    }
+  </script>
+</body>
+</html>

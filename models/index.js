@@ -58,14 +58,25 @@ module.exports = (db) => {
     });
   };
 
-  // P O S T   N E W    R E P O R T
-  const addReport = (data) => {
+  // I N S E R T   N E W    R E P O R T
+  const addSingleReport = (data) => {
     const query = {
       text: `INSERT INTO reports(${Object.keys(tblHelpers).slice(
-        1
+        1,
+        -1
       )}) VALUES (DEFAULT, ${data.map((field) => `'${field}'`)})`,
     };
     return db.query(query);
+  };
+
+  // I N S E R T   A N D   V A L I D A T E    M A N Y   R E P O R T S
+  const addManyReports = (data) => {
+    console.log(data);
+    const query = {
+      text: `INSERT INTO reports
+             VALUES
+             ${data}`,
+    };
   };
 
   // P U L L   S P E C I F I C   R E P O R T S   B Y   I D
@@ -104,7 +115,8 @@ module.exports = (db) => {
   return {
     getAllReports,
     getUnique,
-    addReport,
+    addSingleReport,
+    addManyReports,
     getSpecificReports,
     getTargetField,
     getUsername,

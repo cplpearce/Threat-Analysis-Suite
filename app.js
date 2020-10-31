@@ -111,14 +111,18 @@ app.post("/reports/add", (req, res) => {
   Object.keys(req.body).forEach(
     (field) => (req.body[field] = req.body[field] || "None")
   );
-  const addReport = Promise.resolve(
-    dbHelpers.addReport([2, req.cookies.analyst_id, ...Object.values(req.body)])
+  const addSingleReport = Promise.resolve(
+    dbHelpers.addSingleReport([
+      "Manual Input",
+      req.cookies.analyst_id,
+      ...Object.values(req.body),
+    ])
   );
   const allReportsPromise = Promise.resolve(dbHelpers.getAllReports());
   const userReportsPromise = Promise.resolve(
     dbHelpers.getTargetField("analyst_id", req.cookies.analyst_id)
   );
-  Promise.all([allReportsPromise, userReportsPromise, addReport]).then(
+  Promise.all([allReportsPromise, userReportsPromise, addSingleReport]).then(
     (values) => {
       res.render("main", {
         reports: values[0].length,
@@ -133,11 +137,12 @@ app.post("/reports/add", (req, res) => {
 // V I E W   R E P O R T S
 
 app.get("/reports", (req, res) => {
-  dbHelpers
-    .getAllReports()
-    .then((records) =>
-      res.render("view_reports", { reports: records, fieldNames: tblHelpers() })
-    );
+  dbHelpers.getAllReports().then((records) => {
+    res.render("view_reports", {
+      records,
+      fieldNames: tblHelpers(),
+    });
+  });
 });
 
 app.get("/api/reports", (req, res) => {
@@ -186,7 +191,19 @@ app.get("/profile", (req, res) => {
   res.render("profile");
 });
 
-// A P I
+// D A T  A   A Q U I S I T I O N
+
+// F I L E S
+
+app.get("/import", (req, res) => {
+  res.render("import", { tableCols: tblHelpers() });
+});
+
+app.post("/import/add", (req, res) => {
+  console.log(req.body);
+});
+
+// A P I ' S
 
 // GET api(s)
 app.get("/api", (req, res) => {

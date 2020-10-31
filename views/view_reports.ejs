@@ -27,16 +27,16 @@
       <thead class="thead-dark">
         <tr>
           <% Object.keys(fieldNames).forEach(field => { %>
-          <th style="vertical-align: middle; text-align: center;">
-            <%= fieldNames[field] %>
-          </th>
+            <th style="vertical-align: middle; text-align: center;" data-toggle="tooltip" data-placement="top" title="<%= fieldNames[field].description %>">
+              <%= fieldNames[field].humanName %>
+            </th>
           <% }) %>
         </tr>
       </thead>
       <tfoot class="thead-dark">
         <% Object.keys(fieldNames).forEach(field => { %>
         <th style="vertical-align: middle; text-align: center">
-          <%= fieldNames[field] %>
+          <%= fieldNames[field].humanName %>
         </th>
         <% }) %>
       </tfoot>
@@ -59,8 +59,11 @@
     <!-- Moment.js -->
     <script type="text/javascript" src="/js/moment.js"></script>
     <!-- On load, convert the table to a data table -->
+    
     <script>
       $(document).ready(() => {
+        const fields = <%- JSON.stringify(fieldNames) %>
+
         // Hide the loader and show the table and geo button
         $("#reports-table").removeClass("invisible");
         $("#reports-view-geo-btn").removeClass("d-none");
@@ -68,11 +71,21 @@
 
         const table = $("#reports-table").DataTable({
 
+          // JS for data
+          data: <%- JSON.stringify(records) %>,
+
+          columns: Object.keys(fields).map(f => {
+            return {  data: f  }
+            }),
+
           // Scroll x plane
           scrollX: true,
 
+          // Defer loading all records
+          deferRender: true,
+
           // Dont' resize
-          autowidth: false,
+          autoWidth: false,
           
           // Allow reorder
           colReorder: true,
@@ -82,18 +95,27 @@
 
             // Set timestamp to date
             {
-              targets: 4,
+              targets: [4, -1],
               type: 'date',
               render: data => moment(data).format('DD-MMM-YYYY')
             },
+            // Cast fatalities as a number
+            {
+              targets: -2,
+              render: data => {
+                return (data === "None" ? 0 : data)
+              }
+            },
             // Shorten long fields
             {
-              targets: '_all',
+              targets: [-4, -3],
               className: "truncate",
               render: data => {
-                return `<a data-toggle="popover" data-trigger="focus" tabindex="0" data-content='${data}'>${data}</a>`;
+                return (data ?
+                `<a data-toggle="popover" data-trigger="focus" tabindex="0" data-content='${data}'>${data}</a>` 
+                : 'None')
               },
-          },
+            },
           ],
 
           // Add search panes for 5 columns
@@ -102,15 +124,15 @@
             viewTotal : true,
             threshold: 1,
             // Event Type, Sub Event Type, Actor 1, Actor 2, Admin 1, Location
-            columns: [5, 6, 7, 9, 13, 16],
+            columns: [5, 7, 12, 6, 9, 16],
           },
 
           // Enable route in app.js to put workload on server
-          processing: true,
-          ajax: {
-              url: '/api/reports',
-              type: 'GET',
-          },
+          //processing: true,
+          //ajax: {
+          //    url: '/api/reports',
+          //    type: 'GET',
+          //},
 
           // Build the DOM for Bootstrap and datatables
           dom:
@@ -121,9 +143,11 @@
             "<'row'<'col-lg-12'tr>>",
 
           // B U T T O N S
-          buttons: ["copy", "excel", "csv", "pdf", "print", "colvis", { text: 'Toggle Search Panes', action: () => 
-          $(".dtsp-container").fadeToggle()}, { text: 'Toggle Query Builder', action: () => $(".query-builder").fadeToggle()}],
-
+          buttons: ["copy", "excel", "csv", "pdf", "print", "colvis", { 
+            text: 'Toggle Search Panes', action: () => $(".dtsp-container").fadeToggle()
+          }, {
+            text: 'Toggle Query Builder', action: () => $(".query-builder").fadeToggle()
+          }],
         });
 
         // E N D S   T A B L E   G E N E R T A T I O N

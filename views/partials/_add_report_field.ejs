@@ -1,19 +1,19 @@
 <%# If % 2, create a new div row %>
 <% if (index === 0) { %>
-<div class="row p-4">
-  <div class="col mb-1">
-    <h6 class="pl-1 text-left">Event Date</h6>
-    <input
-      required
-      class="form-control"
-      type="date"
-      placeholder="Event Date"
-      name="event_date"
-      id="event_date-input"
-    >
+  <div class="row p-4">
+    <div class="col mb-1">
+      <h6 class="pl-1 text-left">Event Date</h6>
+      <input
+        required
+        class="form-control"
+        type="date"
+        placeholder="Event Date"
+        name="event_date"
+        id="event_date-input"
+      >
+    </div>
   </div>
-</div>
-<% } %>
+  <% } %>
 <% if ((index + 1) % 2) { %>
   <div class="row p-4"
   id="row-<%= (index + 2) / 2 %>"
@@ -23,25 +23,25 @@
   <div class="col mb-1">
     <h6 class="pl-1 text-left"><%= fieldHuman %></h6>
     <%# if it's a note field, its textarea, otherwise input %>
-    <% if (fieldRaw === 'notes') { %>
+    <% if (fieldName === 'notes') { %>
       <textarea
       required
       class="form-control"
       placeholder="<%= fieldHuman %>"
-      name="<%= fieldRaw %>"
-      id="<%= fieldRaw %>-input"
+      name="<%= fieldName %>"
+      id="<%= fieldName %>-input"
       ></textarea>
     <% } else { %>
       <input
       <%# If it's one of the req fields, mark it as so %>
-      <% if (!['assoc_actor_1', 'actor2', 'assoc_actor_2', 'admin2', 'admin3', 'location'].includes(fieldRaw)) { %>
+      <% if (!['assoc_actor_1', 'actor2', 'assoc_actor_2', 'admin2', 'admin3', 'location'].includes(fieldName)) { %>
       required
       <% } %>
       class="form-control"
       placeholder="<%= fieldHuman %>"
-      name="<%= fieldRaw %>"
-      id="<%= fieldRaw %>-input"
-      list="<%= fieldRaw %>-list"
+      name="<%= fieldName %>"
+      id="<%= fieldName %>-input"
+      list="<%= fieldName %>-list"
       <%# Change input type by field %>
       <% if (['Latitude', 'Longitude', 'Fatailities'].includes(fieldHuman)) { %>
         type="number" 
@@ -52,12 +52,13 @@
     <% } %>
     <%# If it has unique vals, add them %>
     <% if (unique) { %>
-      <datalist id="<%= fieldRaw %>-list">
+      <datalist id="<%= fieldName %>-list">
         <% unique.forEach(val => { %>
           <option value="<%= val %>">
         <% }) %>
       </datalist>
     <% } %>
+    <small><%= fieldDescription %></small>
   </div>
 <% if (index % 2) { %>
   </div>
