@@ -33,8 +33,11 @@
 
 <!-- L E A F L E T   I N I T -->
 
-<!-- Convert EJS var to js -->
-<% const reports = records %>
+<!-- If there are no records, redirect -->
+<% if (!records.length) { %>
+  <% console.log(records) %>
+  <script>document.location.href = '/reports'</script>
+<% } %>
 <script type="text/javascript">
 
   // C O L L E C T   V A R S 
@@ -74,8 +77,28 @@
     // accessToken: 'my-key'
   }).addTo(map)
 
-  // Create a layer group
-  const pointLayer = L.markerClusterGroup({ maxClusterRadius: 100 });
+  // Create a layer group that combines data
+  const markerGroupLayer = L.markerClusterGroup({ maxClusterRadius: 100 });
+
+  // Create normal feature group
+  const markerFeatureLayer = L.featureGroup()
+
+  // An empty map for measuring and just viewing the map
+  const emptyLayer = L.layerGroup();
+
+  // A label group 
+  const labelLayer = L.layerGroup();
+
+  // Add layer controller to map
+  const layerControl = L.control.layers({
+      'Aggregated Features': markerGroupLayer,
+      'Individual Features': markerFeatureLayer,
+      'None': emptyLayer,
+    }, 
+    {
+      'Labels': labelLayer
+    },
+    { position: 'bottomleft' }).addTo(map);
 
   // S T A R T   M A R K E R   G E N E R A T I O N
   Object.keys(records).forEach(record => {
@@ -91,7 +114,8 @@
 
     // Event color
     const color = colors[uniqueEventTypes.indexOf(rR.event_type)];
-    // Create the sigact circle marker
+
+    // Create the report circle marker
     L.circleMarker([rR.latitude, rR.longitude], { 
       // Radius == meters
       title: rR.id,
@@ -103,7 +127,9 @@
       weight: 2
      })
     // Add it to the map
-    .addTo(pointLayer)
+    .addTo(markerGroupLayer)
+    .addTo(markerFeatureLayer)
+
     // Add a popup
     .bindPopup(`
     <table class="geo-table">
@@ -123,15 +149,25 @@
       </thead>
     <tbody>${tBodyRows.join('')}</tbody>
     </table>`, { sticky: true, opacity: .7 })
+
+
+
+    // Create a text marker 
+    L.marker([rR.latitude, rR.longitude], {
+      opacity: 0,
+    })
+    // Add it to feature layer
+    .addTo(labelLayer)
+    .bindTooltip(`ID: ${rR.id}`, {permanent: true, className: "geo-tooltip", offset: [-10, 28] });
   })
 
   // E N D S   M A R K E R   G E N E R A T I O N
 
   // Finally add the points to the map
-  pointLayer.addTo(map)
+  markerGroupLayer.addTo(map)
 
   // And zoom to it :)
-  map.fitBounds(pointLayer.getBounds().pad(0.5));
+  map.fitBounds(markerGroupLayer.getBounds().pad(0.5));
 
   // Add a scalebar
   L.control.scale({ metric: true, maxWidth: 200, opacity: 1 }).addTo(map);
@@ -151,22 +187,32 @@
   const dateString = `${tD.getUTCDate()}-${tD.getUTCMonth()}`;
 
   // Save screenshot
+  // Get screen x, y for screenshot
   const currentView = { 
     width: $("#map").width(),
-     name: 'Current View',
-     height: $("#map").height(),
-     className: 'geoCurrentXY',
-     tooltip: 'Current View Port'
+    name: 'Current View',
+    height: $("#map").height(),
+    className: 'geoCurrentXY',
+    tooltip: 'Current View Port'
   }
 
+  // Get powerpoint dimensions
+  const pPoint = {
+    width: 1200,
+    height: 900,
+    name: "Power Point",
+    tooltip: "Dimensions of a Power Point slide.",
+    className: 'powerPoint',
+  }
+
+  // Init the screenshot tool
   L.easyPrint({
     title: 'Print Map',
     position: 'topleft',
     exportOnly: true,
-    hideControlContainer: false,
     hideClasses: ['leaflet-control-container'],
     filename: `TAS-Map-Export-${dateString}`,
-    sizeModes: ['A4Portrait', 'A4Landscape', currentView]
+    sizeModes: ['A4Portrait', 'A4Landscape', currentView, pPoint]
   }).addTo(map);
 
   // Legend
@@ -187,7 +233,7 @@
   legend.addTo(map);
 
   // Search
-  map.addControl( new L.Control.Search({ layer: pointLayer }) )
+  map.addControl( new L.Control.Search({ layer: markerGroupLayer }) )
 
  
 </script>

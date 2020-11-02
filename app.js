@@ -155,12 +155,14 @@ app.get("/api/reports", (req, res) => {
 // V I E W   R E P O R T
 
 app.get("/reports/:id", (req, res) => {
-  dbHelpers.getSpecificReports(req.body.id).then((report) => {
-    res.render(
-      "view_report",
-      { report_id: req.paramas.id },
-      { fieldNames: tblHelpers() }
-    );
+  // Identify the desired report
+  const requestedID = Number(req.params.id);
+  // Get all the reports
+  dbHelpers.getAllReports().then((records) => {
+    // Find the desired report
+    const report = records.find((record) => record.id === requestedID);
+    // Render the EJS with the reports, desired report, and fieldnames
+    res.render("view_report", { report, records, fieldNames: tblHelpers() });
   });
 });
 
@@ -200,7 +202,18 @@ app.get("/import", (req, res) => {
 });
 
 app.post("/import/add", (req, res) => {
-  console.log(req.body);
+  // Condition our data
+  const records = req.body.records.data.map((record) => {
+    record.splice(1, 0, req.body.records.api_name);
+    record.splice(2, 0, req.cookies.analyst_id);
+    return record;
+  });
+
+  // Add the imported records to the db
+  dbHelpers.addManyReports(records).then((result) => {
+    console.log("Rows updated: " + result.rowCount);
+    res.redirect("/main");
+  });
 });
 
 // A P I ' S

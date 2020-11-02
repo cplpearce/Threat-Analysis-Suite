@@ -4,14 +4,50 @@
   <%- include("partials/_head", {page: "View Report"}) %>
   <body>
     <!-- Nav Partial -->
-    <%- include("partials/_nav") %> q
+    <%- include("partials/_nav") %>
     <!-- Security Classification -->
     <%- include("partials/_security_classification", {classification:
     "Unclassified"}) %>
 
     <!-- Record Content -->
-    <h1>Record Junk</h1>
+    <div class="container d-flex align-content-center my-5">
+      <div class="row report-container w-100">
+        <div class="col-6">
+          <% Object.keys(report).forEach(field => { %>
+            <p class="view-record-field m-1 w-75"><%= fieldNames[field].humanName %></p>
+          <p class="view-record-data m-1 w-75"><%= report[field] || 'None' %></p>
+          <% }) %>
+        </div>
+        <div class="col-6">
+          <svg id="report-vis">
+          </svg>
+        </div>
+      </div>
+    </div>
 
     <!-- View Specific Scripts -->
+    <script type="text/javascript" src="/js/d3.v6.min.js"></script>
+    <script>
+
+      const data = <%- JSON.stringify(records.slice(0, 20)) %>;
+
+      const chart = d3.select("#report-vis")
+      .classed('container', true);
+
+      const xScale = d3.scaleBand().domain(data.map(dataPoint => dataPoint.event_type)).rangeRound([0, 400]).padding(.1);
+      const yScale = d3.scaleLinear().domain([0, 50]).range([400, 0]);
+
+      chart
+      .selectAll('.bar')
+      .data(data)
+      .enter()
+      .append('rect')
+      .classed('bar', true)
+      .attr('background-color', 'red')
+      .attr('width', xScale.bandwidth())
+      .attr('height', data => yScale(data.fatalities))
+      .attr('x', data => xScale(data.event_type))
+      .attr('y', data => yScale(data.fatalities))
+    </script>
   </body>
 </html>

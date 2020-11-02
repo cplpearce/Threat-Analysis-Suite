@@ -116,6 +116,10 @@
                 : 'None')
               },
             },
+            {
+              targets: 0,
+              render: data => `<a href="reports/${data}">${data}</a>`
+            }
           ],
 
           // Add search panes for 5 columns
@@ -200,8 +204,11 @@
         // Extend dataTables search
         $.fn.dataTable.ext.search.push(
           function(settings, searchData, index, rowData, counter) {
+            // Min date
             const min = $('#min-date').val();
+            // Max date
             const max = $('#max-date').val();
+            // Col time stamp
             const timestamp = searchData[4];
 
             if (

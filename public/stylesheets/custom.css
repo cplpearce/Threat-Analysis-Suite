@@ -115,12 +115,38 @@ body {
   stroke: white;
 }
 
+/* Leaflet tooltip */
 .pointTooltip {
   background-color: aqua;
 }
 
+.geo-tooltip {
+  font-family: "Ubuntu";
+  font-weight: 700;
+  background-color: transparent !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.leaflet-tooltip-right:before {
+  all: unset !important;
+}
+
+.leaflet-tooltip-left:before {
+  all: unset !important;
+}
+
+.easyPrintSizeMode {
+  margin-left: 5px;
+}
+
 .easyPrintHolder .geoCurrentXY {
   background-image: url("../img/tasmanian-devil.png");
+}
+
+.easyPrintHolder .powerPoint {
+  background-image: url("../img/powerPoint.jpg");
 }
 
 .leaflet-tooltip td {
@@ -153,4 +179,25 @@ body {
 
 .import-table {
   max-width: 90vw;
+}
+
+/* View Record */
+.view-record-field {
+  padding: 0.2em;
+  color: white;
+  font-weight: 700;
+  background-color: rgb(107, 107, 107);
+  border-radius: 5px;
+  font-size: 0.8em;
+}
+.view-record-data {
+  padding: 0.2em;
+  background-color: rgb(235, 235, 235);
+  border-radius: 5px;
+  font-size: 0.8em;
+}
+
+.report-container {
+  border-radius: 5px;
+  padding: 15px;
 }

@@ -23,5 +23,6 @@ CREATE TABLE reports (
   source TEXT NOT NULL,
   notes TEXT NOT NULL,
   fatalities INTEGER NOT NULL,
-  import_date TIMESTAMP DEFAULT NOW()
+  import_date TIMESTAMP DEFAULT NOW(),
+  UNIQUE (api_event_id, api_name)
 );

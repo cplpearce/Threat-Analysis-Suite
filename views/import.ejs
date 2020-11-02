@@ -10,11 +10,19 @@
   <%- include("partials/_security_classification.ejs", { classification: "Unclassified" }) %>
   
   <!-- Importer Page Content -->
+  <script>
+    // Move to helper when able
+    const inputOnClick = function() {
+      $("#data-preview").empty();
+    };
+
+  </script>
   <div class="container mt-5 d-flex flex-column align-content-center align-items-center">
+    <div id="alert-container"></div>
     <h3>Importing a CSV File</h3>
     <strong>In order to import a CSV successfully to TAS it must follow this schema:</strong>
     <table class="table table-bordered my-2" style="white-space: nowrap; font-size: .7em;">
-      <% Object.keys(tableCols).splice(1)
+      <% Object.keys(tableCols).splice(1, 21)
       .filter(col => !['api_id', 'analyst_id', 'api_name'].includes(col))
       .forEach(field => { %>
         <td 
@@ -32,16 +40,18 @@
     <strong>A preview will build after selecting a file.</strong>
     <form class="table table-sm w-50">
       <div class="input-group my-2">
-        <div class="input-group-prepend">
-          <span class="input-group-text">CSV</span>
-        </div>
-        <div class="custom-file">
-          <input type="file" class="custom-file-input" accept=".csv" id="csv-input">
-          <label class="custom-file-label" for="csv-input"></label>
+        <div>
+          <input required onClick="inputOnClick()" type="file" accept=".csv" id="csv-input">
         </div>
       </div>
-      <button id="import-submit" type="submit" class="btn btn-primary my-2 w-100">Import</button>
     </form>
+    <div class="input-group mb-3 w-50">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon2">API Name</span>
+      </div>
+      <input required type="text" class="form-control" id="api-input" placeholder="News, Mil-Agency, etc">
+    </div>
+    <button id="import-submit" class="btn btn-primary my-2 w-50 disabled">Import</button>
     <div id="data-preview">
     </div>
   </div>
@@ -56,45 +66,87 @@
       $(function () {
         $('[data-toggle="popover"]').popover({ trigger: "hover" });
       });
-    })
-    // CSV results
-    let csvContents = {};
-    // Get input element
-    const inputElement = document.getElementById("csv-input");
-    // Add file listener
-    inputElement.addEventListener("change", handleCSV, false);
-    function handleCSV() {
+    
+      // Results
+      let csvData = {};
+      
+      // Get input element
+      const inputElement = document.getElementById("csv-input");
+
+      // Add file listener
+      inputElement.addEventListener("change", handleCSV, false);
+
+      // Handle the input CSV file
+      function handleCSV() {
+        
       // Get the CSV
       const csv = this.files[0];
+      $("#csv-input").attr("placeholder", csv)
       // Use papaparse to read the csv
-      const data = Papa.parse(csv, {
+      Papa.parse(csv, {
         complete: function(results) {
-          csvContents = results;
-          $("#data-preview").html(`
-          <small>10 example records from your CSV.</small>
-          <table class="table table-bordered table-sm mb-5 import-table">
-            <thead class="thead-dark" style="font-size: .7em">
-              <tr>
-                ${results.data[0].map(record => {
-                  return `<th>${record}</th>`
-                }).join('')}
-              </tr>
-            </thead>
-            <tbody>
-                ${results.data.splice(1, 10).map(record => {
-                  return `
-                  <tr>
-                    ${record.map(rec => {
-                      return `<td class="import-cell">${rec}</td>`
-                    }).join('')}
-                  </tr>`;
-                }).join('')}
-            </tbody>
-          </table>            
-          `)
+          csvData = results.data.slice(1);
+          if (results.data[0].length !== 19) {
+            $("#alert-container").html(`
+            <div class="alert alert-danger" role="alert">
+              CSV file DOES NOT follow schema.
+            </div>
+            `)
+          } else {
+            $("#data-preview").html(`
+            <small>10 example records from your CSV.</small>
+            <table class="table table-bordered table-sm mb-5 import-table">
+              <thead class="thead-dark" style="font-size: .7em">
+                <tr>
+                  ${results.data[0].map(record => {
+                    return `<th>${record}</th>`
+                  }).join('')}
+                </tr>
+              </thead>
+              <tbody>
+                  ${results.data.splice(1, 20).map((record, index) => {
+                    return `
+                    <tr>
+                      ${record.map(rec => {
+                        return `<td class="import-cell">${rec}</td>`
+                      }).join('')}
+                    </tr>`;
+                  }).join('')}
+              </tbody>
+            </table>            
+            `)
+          }
         }
       });
+
+        $("#import-submit").click(() => {
+          // First check if data is valid
+          if (!$("#api-input").val() || !csvData) {
+            $("#alert-container").html(`
+            <div class="alert alert-danger" role="alert">
+              CSV file AND API name fields NOT both filled.
+            </div>
+            `)
+          } else {
+            $("#alert-container").empty();
+            // Filter the data
+            csvData = csvData.filter(data => data.length === 19)
+            $.post('/import/add', ({ records: { data: csvData, api_name: $("#api-input").val() }}))
+            .done(() => window.location.href = '/main')
+          }
+      });
+      
+      $("#api-input").keyup(() => {
+        if ($("#csv-input").val() && $("#api-input").val()) { 
+          $("#alert-container").empty();
+          $("#import-submit").removeClass("disabled");
+          $("#import-submit").removeClass("btn-primary");
+          $("#import-submit").addClass("btn-success");
+        }
+      })
     }
+  });
+  
   </script>
 </body>
 </html>

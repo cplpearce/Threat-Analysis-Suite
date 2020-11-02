@@ -70,15 +70,23 @@ module.exports = (db) => {
   };
 
   // I N S E R T   A N D   V A L I D A T E    M A N Y   R E P O R T S
-  const addManyReports = (data) => {
-    console.log(data);
+  const addManyReports = (records) => {
     const query = {
-      text: `INSERT INTO reports
-             VALUES
-             ${data}`,
+      text: `INSERT INTO reports(${Object.keys(tblHelpers)
+        .slice(1, -1)
+        .map((f) => f)
+        .join(",")}) VALUES 
+      ${records
+        .map((report) => {
+          return `(${report.map((field) => `$$${field}$$`).join(",")})`;
+        })
+        .join(",")} ON CONFLICT DO NOTHING RETURNING (api_event_id, api_name)`,
     };
+    return db
+      .query(query)
+      .then((result) => result)
+      .catch((err) => console.log(err));
   };
-
   // P U L L   S P E C I F I C   R E P O R T S   B Y   I D
   const getSpecificReports = (ids) => {
     const query = {
