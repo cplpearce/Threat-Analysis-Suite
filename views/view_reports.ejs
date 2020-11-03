@@ -22,7 +22,7 @@
     </div>
     <table
       id="reports-table"
-      class="invisible w-100 table table-sm table-bordered table-hover"
+      class="invisible w-100 table table-sm table-bordered stripe table-striped"
     >
       <thead class="thead-dark">
         <tr>
@@ -81,11 +81,8 @@
           // Scroll x plane
           scrollX: true,
 
-          // Defer loading all records
-          deferRender: true,
-
           // Dont' resize
-          autoWidth: false,
+          autoWidth: true,
           
           // Allow reorder
           colReorder: true,
@@ -116,9 +113,17 @@
                 : 'None')
               },
             },
+            // Link to report
             {
               targets: 0,
-              render: data => `<a href="reports/${data}">${data}</a>`
+              render: data => `<a href="reports/${data}"><b>${data}</b></a>`
+            },
+            // Hide some columns
+            {
+              targets: [8, 10, 15, 17, 18, -1],
+              visible: false,
+              searchable: true,
+
             }
           ],
 
@@ -128,7 +133,7 @@
             viewTotal : true,
             threshold: 1,
             // Event Type, Sub Event Type, Actor 1, Actor 2, Admin 1, Location
-            columns: [5, 7, 12, 6, 9, 16],
+            columns: [5, 7, 14, 6, 9, 16],
           },
 
           // Enable route in app.js to put workload on server
@@ -175,12 +180,15 @@
 
          // On geo button click, move to map with data
         $("#reports-view-geo-btn").click(() => {
+          console.log(currentRows.length)
+          $("#virtual-form").remove();
           const form = $(`
-            <form action="/geo" method="post">
+            <form id="virtual-form" class="invisible" action="/geo" method="post" target="_blank" rel="noreferrer noopener">
               <input type="text" name="report_ids" value="${currentRows}"/>
+              <input type="submit" id="virtual-form-submit" />
             </form>`);
           $("body").append(form);
-          form.submit();
+          $("#virtual-form-submit").click();
         });
 
         // Add date pickers
@@ -225,5 +233,14 @@
         $('.date-range-filter').change(() => table.draw());
       });
     </script>
+    <style>
+      .odd,
+      .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgb(216, 216, 216);
+      }
+      .table-bordered td, .table-bordered th {
+        border: transparent;
+      }
+    </style>
   </body>
 </html>

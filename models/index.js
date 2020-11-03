@@ -109,10 +109,23 @@ module.exports = (db) => {
       .catch((err) => err);
   };
 
-  // G E T   U S E R   L O G I N S
+  // M A N A G E   U S E R S
   const getUsername = (user) => {
     const query = {
       text: `SELECT * FROM users WHERE user_name = '${user}'`,
+    };
+    return db
+      .query(query)
+      .then((result) => result.rows)
+      .catch((err) => err);
+  };
+
+  const updateUserPin = (userID, userPin) => {
+    const query = {
+      text: `UPDATE users
+        SET user_pin = ${userPin}
+        WHERE id = ${userID}
+        RETURNING *;`,
     };
     return db
       .query(query)
@@ -128,5 +141,6 @@ module.exports = (db) => {
     getSpecificReports,
     getTargetField,
     getUsername,
+    updateUserPin,
   };
 };

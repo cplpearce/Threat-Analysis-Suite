@@ -32,7 +32,7 @@
         tabindex="0"
         data-content="<%= tableCols[field].humanName %> - <%= tableCols[field].description %>"
         >
-          <%= tableCols[field].fieldName %>
+          <%= tableCols[field].humanName %>
         </td>
       <% }) %>
     </table>
@@ -94,7 +94,7 @@
             `)
           } else {
             $("#data-preview").html(`
-            <small>10 example records from your CSV.</small>
+            <small>20 example records from your CSV.</small>
             <table class="table table-bordered table-sm mb-5 import-table">
               <thead class="thead-dark" style="font-size: .7em">
                 <tr>

@@ -210,7 +210,14 @@
     title: 'Print Map',
     position: 'topleft',
     exportOnly: true,
-    hideClasses: ['leaflet-control-container'],
+    hideControlContainer: false,
+    hideClasses: [
+      'leaflet-control-layers',
+      'leaflet-control-search',
+      'leaflet-control-easyPrint',
+      'leaflet-bar',
+      'leaflet-control-zoom'
+    ],
     filename: `TAS-Map-Export-${dateString}`,
     sizeModes: ['A4Portrait', 'A4Landscape', currentView, pPoint]
   }).addTo(map);
@@ -233,7 +240,18 @@
   legend.addTo(map);
 
   // Search
-  map.addControl( new L.Control.Search({ layer: markerGroupLayer }) )
+  map.addControl( new L.Control.Search({ layer: markerGroupLayer, marker: {
+    circle: {
+      radius: 50,
+      color: 'white',
+      fillOpacity: 0,
+      riseOnHover: true,
+      weight: 4
+    },
+    icon: false,
+  }
+  }
+  ))
 
  
 </script>

@@ -16,8 +16,8 @@ const db = require("./db");
 const dbHelpers = require("./models")(db);
 // Helper field funcs
 const tblHelpers = require("./helpers/tblFields");
-// Local contact info
-const localContacts = require("./data/contact_information.json");
+// Local Organization info
+const orgInfo = require("./data/org_information.json");
 
 // I N I T   E X P R E S S
 const app = express();
@@ -31,7 +31,14 @@ app.use(express.static("public"));
 // Parse cookies
 app.use(cookieParser());
 // Parse req bodies
-app.use(bodyParser.urlencoded({ extended: true, limit: "500mb" }));
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+    limit: "500mb",
+    extended: true,
+    parameterLimit: 1000000,
+  })
+);
 // Logger dev
 app.use(logger("dev"));
 
@@ -88,7 +95,7 @@ app.get("/main", (req, res) => {
     res.render("main", {
       reports: values[0].length,
       myReports: values[1].length,
-      localContacts,
+      orgInfo,
     });
   });
 });
@@ -113,7 +120,7 @@ app.post("/reports/add", (req, res) => {
   );
   const addSingleReport = Promise.resolve(
     dbHelpers.addSingleReport([
-      "Manual Input",
+      orgInfo.organization.name,
       req.cookies.analyst_id,
       ...Object.values(req.body),
     ])
@@ -127,7 +134,7 @@ app.post("/reports/add", (req, res) => {
       res.render("main", {
         reports: values[0].length,
         myReports: values[1].length,
-        localContacts,
+        orgInfo,
         message: { style: "primary", msg: "Added report successfully!" },
       });
     }
@@ -184,7 +191,23 @@ app.post("/geo", (req, res) => {
 // S E T T I N G S
 
 app.get("/settings", (req, res) => {
-  res.render("settings");
+  dbHelpers.getUsername(req.cookies.analyst_id).then((results) => {
+    res.render("settings", { user: results[0] });
+  });
+});
+
+app.post("/settings/:id/pin", (req, res) => {
+  dbHelpers.getUsername(req.cookies.analyst_id).then((userInfo) => {
+    console.log(userInfo[0].id, req.params.id);
+    if (userInfo[0].id === Number(req.params.id)) {
+      dbHelpers
+        .updateUserPin(userInfo[0].id, req.body.newPin)
+        .then((results) => {
+          console.log(results);
+          res.redirect("../../main");
+        });
+    }
+  });
 });
 
 // P R O F I L E
