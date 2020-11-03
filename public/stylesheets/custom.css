@@ -122,7 +122,7 @@ body {
 
 .geo-tooltip {
   font-family: "Ubuntu";
-  font-weight: 700;
+  font-weight: 600;
   background-color: transparent !important;
   color: white !important;
   border: none !important;
@@ -183,10 +183,10 @@ body {
 
 /* View Record */
 .view-record-field {
-  padding: 0.2em;
+  padding: 1em;
   color: white;
   font-weight: 700;
-  background-color: rgb(107, 107, 107);
+  background-color: rgb(56, 55, 55);
   border-radius: 5px;
   font-size: 0.8em;
 }

@@ -10,45 +10,38 @@
     "Unclassified"}) %>
 
     <!-- Record Content -->
-    <div class="container d-flex align-content-center my-5">
-      <div class="row report-container w-100">
-        <div class="col-6">
-          <% Object.keys(report).forEach(field => { %>
-            <p class="view-record-field m-1 w-75"><%= fieldNames[field].humanName %></p>
-          <p class="view-record-data m-1 w-75"><%= report[field] || 'None' %></p>
-          <% }) %>
+    <h4 class="text-center mt-5">View & Edit Record Details</h4>
+    <div class="container d-flex align-content-center mt-2">
+      <form action="/reports/<%= report.id %>" method="post" class="w-100">
+        <div class="row report-container w-100">
+          <div class="col-2 text-left">
+            <% Object.keys(fieldNames).slice(1, -1).forEach(field => { %>
+              <p class="my-0"><a href="#record-update-<%= field %>"><%= fieldNames[field].humanName %></a></p>
+            <% }) %>
+          </div>
+          <div class="col-8">
+            <% Object.keys(report).slice(1, -1).forEach(field => { %>
+              <p style="margin: 1em 0em" id="record-update-<%= field %>" class="view-record-field text-left"><%= fieldNames[field].humanName %></p>
+              <textarea name="recordUpdate<%= field %>" class="view-record-data w-100" value=""><%= report[field] %></textarea>
+            <% }) %>
+          </div>
+          <div class="col-2">
+            <button type="submit" class="btn btn-success w-100 my-3">Update</button>
+            <button class="btn btn-danger w-100">Delete</button>
+          </div>
         </div>
-        <div class="col-6">
-          <svg id="report-vis">
-            
-          </svg>
-        </div>
-      </div>
+      </form>
     </div>
 
     <!-- View Specific Scripts -->
     <script type="text/javascript" src="/js/d3.v6.min.js"></script>
     <script>
-
-      const data = <%- JSON.stringify(records.slice(0, 20)) %>;
-
-      const chart = d3.select("#report-vis")
-      .classed('container', true);
-
-      const xScale = d3.scaleBand().domain(data.map(dataPoint => dataPoint.event_type)).rangeRound([0, 400]).padding(.1);
-      const yScale = d3.scaleLinear().domain([0, 50]).range([400, 0]);
-
-      chart
-      .selectAll('.bar')
-      .data(data)
-      .enter()
-      .append('rect')
-      .classed('bar', true)
-      .attr('background-color', 'red')
-      .attr('width', xScale.bandwidth())
-      .attr('height', data => yScale(data.fatalities))
-      .attr('x', data => xScale(data.event_type))
-      .attr('y', data => yScale(data.fatalities))
+      $(document).ready(function() {
+        $('textarea').each((index, textarea) => {
+          console.log($(textarea).attr('name'))
+          $(textarea).attr('style', `height: ${$(textarea).scrollHeight}em`);
+        });
+      })
     </script>
   </body>
 </html>

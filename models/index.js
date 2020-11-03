@@ -69,6 +69,28 @@ module.exports = (db) => {
     return db.query(query);
   };
 
+  // U P D A T E   R E P O R T
+  const updateReport = (reportID, reportData) => {
+    console.log(reportData["recordUpdateevent_date"]);
+    reportData["recordUpdateevent_date"] = new Date(
+      reportData["recordUpdateevent_date"]
+    ).toLocaleString();
+    console.log(reportData["recordUpdateevent_date"]);
+
+    const query = {
+      text: `UPDATE reports SET (${Object.keys(tblHelpers)
+        .splice(1, 21)
+        .map((field) => field)
+        .join(",")}) = (${Object.values(reportData)
+        .map((value) => `$$${value}$$`)
+        .join(",")}) WHERE id = ${reportID}`,
+    };
+    console.log(query);
+    return db
+      .query(query)
+      .then((result) => result.rows)
+      .catch((err) => console.log(err));
+  };
   // I N S E R T   A N D   V A L I D A T E    M A N Y   R E P O R T S
   const addManyReports = (records) => {
     const query = {
@@ -142,5 +164,6 @@ module.exports = (db) => {
     getTargetField,
     getUsername,
     updateUserPin,
+    updateReport,
   };
 };

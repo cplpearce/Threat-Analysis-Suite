@@ -173,6 +173,14 @@ app.get("/reports/:id", (req, res) => {
   });
 });
 
+app.post("/reports/:id", (req, res) => {
+  const requestedID = Number(req.params.id);
+  const data = req.body;
+  dbHelpers.updateReport(requestedID, data).then((result) => {
+    res.redirect("../main");
+  });
+});
+
 // G E O S P A T I A L   V I E W
 
 // GET
