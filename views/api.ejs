@@ -10,8 +10,70 @@
   <%- include("partials/_security_classification.ejs", { classification: "Unclassified" }) %>
   
   <!-- API Page Content -->
-  <div class="container mt-5">
-    APIs
+  <div class="container-fluid mt-5 d-flex align-items-center justify-content-center flex-column">
+    <h4 class="my-3">API Data Import</h4>
+    Enter API
+    <input id="api-input" class="form-control w-25" type="text" value="/some-api">
+    <button id="api-submit" class="btn btn-primary w-25 my-2" type="text">Submit API</button>
+    <hr/>
+    <div id="api-data-div" class="w-100">
+    </div>
   </div>
+  <script>
+    const fieldNames = <%- JSON.stringify(fieldNames) %>;
+    let apiData = {}
+    $("#api-submit").click(() => {
+      const res = $.get($("#api-input").val())
+      .done(data => {
+        apiData = JSON.parse(data)
+      })
+      .then(() => {
+        const reports = Object.values(apiData);
+        $("#api-data-div").html($(`
+        <table id="api-data-table" class="table table-striped">
+          <thead class="thead-dark">
+            <tr>
+              ${Object.keys(apiData['0']).map(key => `<th>${key}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              ${Object.keys(apiData['0']).map(key => `<td>${apiData['0'][key]}</td>`).join('')}
+            </tr>
+            <tr>
+              ${Object.keys(apiData['1']).map(key => `<td>${apiData['1'][key]}</td>`).join('')}
+            </tr>
+          </tbody>
+          <tfoot>
+            ${Object.keys(apiData['0']).map(key => `<td><select id="select-${key}" class="api-input-dropdown"></td>`).join('')}
+          </tfoot>
+        </table>
+        `))
+      })
+      .then(() => {
+        console.log(fieldNames)
+        const options = `
+            ${Object.keys(fieldNames).slice(1, -1).map(field => {
+              return `<option value="${fieldNames[field].fieldName}">${fieldNames[field].humanName}</option>`
+            }).join('')}</select>
+          `
+        console.log(options)
+        $(".api-input-dropdown").each((index, select) => {
+          
+          $(select).append(options)
+        })
+      })
+    })
+    
+  </script>
+  <style>
+    #api-data-table {
+      font-size: .8em;
+    }
+
+    #api-data-table input {
+      width: 100%;
+    }
+  </style>
 </body>
 </html>

@@ -11,6 +11,7 @@
         name="event_date"
         id="event_date-input"
       >
+      <span><small>The date this event occured.</small></span>
     </div>
   </div>
   <% } %>
@@ -37,7 +38,7 @@
       <% if (!['assoc_actor_1', 'actor2', 'assoc_actor_2', 'admin2', 'admin3', 'location'].includes(fieldName)) { %>
       required
       <% } %>
-      class="form-control"
+      class="form-control  control-label"
       placeholder="<%= fieldHuman %>"
       name="<%= fieldName %>"
       id="<%= fieldName %>-input"

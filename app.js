@@ -54,8 +54,6 @@ app.get("/login", (req, res, next) => {
 // POST
 app.post("/login", (req, res) => {
   dbHelpers.getUsername(req.body.username).then((userObj) => {
-    console.log(userObj);
-    console.log(req.body);
     if (Number(req.body.pin) === userObj[0].user_pin) {
       res.cookie("analyst_id", userObj[0].user_name);
       res.redirect("main");
@@ -206,12 +204,10 @@ app.get("/settings", (req, res) => {
 
 app.post("/settings/:id/pin", (req, res) => {
   dbHelpers.getUsername(req.cookies.analyst_id).then((userInfo) => {
-    console.log(userInfo[0].id, req.params.id);
     if (userInfo[0].id === Number(req.params.id)) {
       dbHelpers
         .updateUserPin(userInfo[0].id, req.body.newPin)
         .then((results) => {
-          console.log(results);
           res.redirect("../../main");
         });
     }
@@ -242,7 +238,6 @@ app.post("/import/add", (req, res) => {
 
   // Add the imported records to the db
   dbHelpers.addManyReports(records).then((result) => {
-    console.log("Rows updated: " + result.rowCount);
     res.redirect("/main");
   });
 });
@@ -251,7 +246,7 @@ app.post("/import/add", (req, res) => {
 
 // GET api(s)
 app.get("/api", (req, res) => {
-  res.render("api");
+  res.render("api", { fieldNames: tblHelpers() });
 });
 
 // POST new api
@@ -263,6 +258,36 @@ app.post("/api", (req, res) => {
 
 app.get("/", (req, res) => {
   res.redirect("/main");
+});
+
+// D E M O   A P I
+app.get("/some-api", (req, res) => {
+  res.send(`
+  {
+    "0": {
+      "id": 1,
+      "date": "13 Oct 2020",
+      "type": "Battle",
+      "attacker": "Ukraine Mility Forces",
+      "victim": "Separatist Forces",
+      "city": "Fakecityika",
+      "lat": 48,
+      "lon": 48,
+      "fatalities": 5
+    },
+    "1": {
+      "id": 2,
+      "date": "14 Oct 2020",
+      "type": "Mortar Strike",
+      "attacker": "Separatist Forces",
+      "victim": "Ukraine Mility Forces",
+      "city": "Airporttika",
+      "lat": 49,
+      "lon": 47,
+      "fatalities": 10
+    }
+  }
+  `);
 });
 
 // S T A R T   T H E    S E R V E R

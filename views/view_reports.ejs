@@ -82,10 +82,10 @@
           scrollX: true,
 
           // Dont' resize
-          autoWidth: true,
+          autoWidth: false,
           
           // Allow reorder
-          colReorder: true,
+          colReorder: false,
 
           // Notes & source column max length 64 char and generate popup text
           columnDefs: [
@@ -105,7 +105,7 @@
             },
             // Shorten long fields
             {
-              targets: [-4, -3],
+              targets: [-4, -3, -7],
               className: "truncate",
               render: data => {
                 return (data ?
@@ -120,7 +120,7 @@
             },
             // Hide some columns
             {
-              targets: [8, 10, 15, 17, 18, -1],
+              targets: [6, 8, 10, 11, 12, 14, 15, 17, 18, 22],
               visible: false,
               searchable: true,
 
@@ -156,7 +156,7 @@
             text: 'Toggle Search Panes', action: () => $(".dtsp-container").fadeToggle()
           }, {
             text: 'Toggle Query Builder', action: () => $(".query-builder").fadeToggle()
-          }],
+          },],
         });
 
         // E N D S   T A B L E   G E N E R T A T I O N
@@ -180,7 +180,6 @@
 
          // On geo button click, move to map with data
         $("#reports-view-geo-btn").click(() => {
-          console.log(currentRows.length)
           $("#virtual-form").remove();
           const form = $(`
             <form id="virtual-form" class="invisible" action="/geo" method="post" target="_blank" rel="noreferrer noopener">
@@ -237,6 +236,7 @@
       .odd,
       .table-striped tbody tr:nth-of-type(odd) {
         background-color: rgb(216, 216, 216);
+        padding: 5px;
       }
       .table-bordered td, .table-bordered th {
         border: transparent;

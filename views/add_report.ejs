@@ -33,12 +33,19 @@
           $(`#row-${row}`).css({"background": "#d1d1d1", "border-radius": "10px"})
         }
       })
-      $(":input[required]").css("border", "solid #e64949 1px")
+
+      $(":input[required]").css("border", "solid #ff6040 1px")
+
       $(":input[required]").change((event) => {
         if (event.target.value) {
           $(`#${event.target.id}`).css("border", "solid #ced4da 1px")
         }
       })
+
+      jQuery(document).ready(function() {
+        jQuery("[required]").after("<span class='required' style='color: red'>*</span>");
+      });
+    
     </script>
   </body>
 </html>
