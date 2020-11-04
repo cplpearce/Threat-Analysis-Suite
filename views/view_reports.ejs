@@ -149,7 +149,9 @@
             "<'row'<'my-2 date-picker-container row col-sm-12 col-md-12 col-lg-12'>>" +
             "<'row'<'float-lg-right col-sm-4 col-md-4 col-lg-9'B><'col-sm-4 col-md-4 col-lg-1'l><'col-sm-4 col-md-4 col-lg-2'f>>" +
             "<'row'<'col-sm-12 col-md-4'i><'col-sm-12 col-md-8'p>>" +
-            "<'row'<'col-lg-12'tr>>",
+            "<'row'<'col-lg-12'tr>>" +
+            "<'row'<'col-sm-12 col-md-4'i><'col-sm-12 col-md-8'p>>",
+
 
           // B U T T O N S
           buttons: ["copy", "excel", "csv", "pdf", "print", "colvis", { 
@@ -193,13 +195,13 @@
         // Add date pickers
         $(".date-picker-container").html(
           `
-          <div class="input-group input-date-range col-2">
+          <div class="input-group input-date-range col-4">
             <div class="input-group-prepend">
               <span class="input-group-text">From date:</span>
             </div>
             <input type="date" id="min-date" class="form-control date-range-filter" data-date-format="yyyy-mm-dd">
           </div> 
-          <div class="input-group input-date-range col-2">
+          <div class="input-group input-date-range col-4">
             <div class="input-group-prepend">
               <span class="input-group-text">To date:</span>
             </div> 

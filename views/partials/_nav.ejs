@@ -3,6 +3,9 @@
     <div class="navbar-collapse collapse order-1 order-md-0">
       <img src="/img/tasmanian-devil.png" class="tas-icon white" width="30" height="30" alt="">
       <a class="navbar-brand mx-1" href="/"><strong>Threat Analysis Suite</strong></a>
+      <% if (typeof analyst_id !== 'undefined') { %>
+        <strong id="current-user" class="ml-5" style="color: white">Logged In: <%= analyst_id %></strong>
+      <% } %>
     </div>  
     <ul class="nav justify-content-end">
       <div class="btn-group" role="group">

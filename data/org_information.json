@@ -3,7 +3,7 @@
     "Emergency": {
       "Emergency": "112",
       "Canadian Embassy": "+964 783 303 5357",
-      "Iraqi Red Crescent Society": "+96 770 462 1141",
+      "Ukrainian Red Cross": "+96 770 462 1141",
       "Local QRF": "+96 555 555 1234"
     },
     "Team Contacts": {
@@ -13,13 +13,13 @@
       "Local Government Liason Officer": "+96 123 456 1234"
     },
     "Local Military Contacts": {
-      "Peshmerga": "+96 999 888 7777",
-      "Mosul Police": "+96 111 222 3333",
-      "Mosul IED Div": "+96 854 356 4785"
+      "Ukrainian Armed Forces": "+96 999 888 7777",
+      "Ukrainian Police": "+96 111 222 3333",
+      "Ukrainian IED Div": "+96 854 356 4785"
     },
     "Local News Agencies": {
-      "Mosul News": "+93 456 789 1325",
-      "Erbil Report": "+96 332 665 9998"
+      "Ukrainian News": "+93 456 789 1325",
+      "Kiev Report": "+96 332 665 9998"
     }
   },
   "organization": {
