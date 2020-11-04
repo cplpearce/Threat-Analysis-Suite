@@ -1,42 +1,48 @@
 ## Threat Analysis Suite (TAS)
 
-An opensource threat analysis suite for NGO's, Humanitarian Efforts, and basic Geospatial analysis.
+An open source threat analysis suite for NGO's, Humanitarian Efforts, and basic Geospatial analysis.
 
-### Main User Stories
+The Threat Analysis Suite (TAS) is primarily aimed at collators and intelligence analysts for first-line analysis and geospatial situational awareness.  TAS ingests SIGACTs with a minimal level of required datapoints, namely location, type, and date and renders them into the database and query builder.
 
-- As a user, I may not have the internet and will require an offline capable suite.
-- ~~As a user, I would like to be able to view geospatial global threat data; and from that data derive basic intelligence.~~
-- ~~As a user, I don't plan to host this suite, and may be running this off an Raspberry Pi or any light architexture so it needs to be light weight but reliable.~~
-- As a user, I want to be able to export a piece of data into a KMZ, or graphic image.
-- As a user, I want to add my own data to the suite.
+In addition TAS is primarily meant to be run in an offline environment from a Raspberry Pi device, acting as a standalone server for your team.  This eschews common pitfalls of web deployment but adds a layer of complexity in working without internet support.  Currently TAS is fully operational offline.
 
-## Dev plans
+Lastly and most importantly TAS aims to meet the Canadian Government and Commonwealth requirements of Classifications, with banners and encryption.
 
-- Maybe add d3.js integration?
-- ~~Handeling offline maps - MBTiles, or geoserver?~~ - Out of Scope
+### TAS currently features the following:
+- Querying and filtering.
+- Exporting and printing.
+- Importing and redundancy management.
+- Geospatial rendering & basic analysis; and,
+- Visualized geospatial rendering exporting to well-known formats.
 
-### Side Lines
+### Administrator Notes
+TAS requires minimal setup.  In the `/data` folder is a JSON file with predefined fields for deployment.  These fields will fill various dynamically generated user data, as well as simplify setup for your team.
 
-- ~~There won't be a need for session management, or user logins.~~ - Added!
-There won't be a need to add complicated security methods to the database.
-The site should use only simple CSS, and Bootstrap.
+Server setup is as follows:
+- Install Postgres and `psql`.
+- Install NodeJS.
+- Clone this repo to your server `git clone https://github.com/cplpearce/Threat-Analysis-Suite.git TAS`.
+- Run `npm i` to install all the required dependencies.
+- Run `npm run db:reset` to reset the database with your user accounts and a template for your reports.
+- Run `node app.js` to begin running the server on port 3005.
+- *If running offline* Collect MBTiles geospatial tiles of your target operations area and ammend the JSON setup file to read from your offline store.
+
+### Further Development
+
+- Plans for the integration to MapBox, Turf, and D3.js.
+- Refactoring.
+- Added analyst ease-of-use features (bulk record editing, geospatial querying).
 
 ### Tech Stack
 
 Node && Express
-- ~~Electron?~~
-PostSQL ~~|| SQLite?~~
-
-### JS Libraries
-
-- Turf.js           | https://www.npmjs.com/package/@turf/turf
-- ~~OpenLayers.js   | https://openlayers.org/~~
-- Leaflet Heatmap   | http://leaflet.github.io/Leaflet.heat/demo/
-- HeatLayer         | https://github.com/Leaflet/Leaflet.heat
+PostgreSQL
+DataTables
+Leaflet
 
 ## Data API
 
-This suite uses ACLED data, open source UNCLASSIFIED data for its analysis.
+This suite uses any tabular data, in the case of sample data currently ACLED which is open source UNCLASSIFIED data.
 
 https://acleddata.com/acleddatanew/wp-content/uploads/dlm_uploads/2019/04/ACLED_Codebook_2019FINAL_pbl.pdf
 
@@ -46,30 +52,27 @@ Here is the schema and key data for that data.
 
 ```
 Column Name Content
-1. ISO               ....   A numeric code for each individual country
-2. EVENT_ID_CNTY     ....   An individual identifier by number and country acronym
-3. EVENT_ID_NO_CNTY  ....   An individual numeric identifier (updated annually)
-4. EVENT_DATE        ....   The day, month and year on which an event took place
-5. YEAR              ....   The year in which an event took place
-6. TIME_PRECISION    ....   A numeric code indicating the level of certainty of the date
-7. EVENT_TYPE        ....   The type of event
-8. SUB_EVENT_TYPE    ....   The type of sub-event
-9. ACTOR1            ....   The named actor involved in the event
-10. ASSOC_ACTOR_1    ....   The named actor associated with or identifying ACTOR1
-11. INTER1           ....   A numeric code indicating the type of ACTOR1
-12. ACTOR2           ....   The named actor involved in the event
-13. ASSOC_ACTOR_2    ....   The named actor associated with or identifying ACTOR2
-14. INTER2           ....   A numeric code indicating the type of ACTOR2
-15. INTERACTION      ....   A numeric code indicating the interaction between types of 16 ACTOR1 and ACTOR2
-17. REGION           ....   The region of the world where the event took place
-18. COUNTRY          ....   The country in which the event took place
-19. ADMIN1           ....   The largest sub-national administrative region in which the event took place
-20. ADMIN2           ....   The second largest sub-national administrative region in which the event took place
-21. ADMIN3           ....   The third largest sub-national administrative region in which the event took place
-22. LOCATION         ....   The location in which the event took place
-23. LATITUDE         ....   The latitude of the location
-24. LONGITUDE        ....   The longitude of the location
-25. GEO_PRECISION    ....   A numeric code indicating the level of certainty of the location
-
-\COPY reports(analyst_id, internal_id, api_id, api_event_id, event_type, sub_event_type, actor1, assoc_actor_1, actor2, assoc_actor_2, region, country, admin1, admin2, admin3, location, latitude, longitude, source, notes, fatalities, timestamp) FROM /home/clinton/lighthouse/projects/Threat-Analysis-Suite/data/MiddleEast_2020Oct2o.csv WITH (FORMAT csv, DELIMITER ',', HEADER true);
+1.  ID                .. Autogenerated   ..   A numeric code for each individual country
+2.  API_EVENT_ID      .. Required        ..   External API record tracker to elimiate duplicates.
+3.  API _NAME         .. Required        ..   External API or source to track reports.
+4.  ANALYST_ID        .. Autogenerated   ..   The analyst whom imported or created a report.
+5.  EVENT_DATE        .. Required        ..   The day, month and year on which an event took place
+6.  EVENT_TYPE        .. Required        ..   The type of event
+7.  SUB_EVENT_TYPE    .. Required        ..   The type of sub-event
+8.  ACTOR1            .. Required        ..   The named actor involved in the event
+9.  ASSOC_ACTOR_1     ..                 ..   The named actor associated with or identifying ACTOR1
+10. ACTOR2            ..                 ..   The named actor involved in the event
+11. ASSOC_ACTOR_2     ..                 ..   The named actor associated with or identifying ACTOR2
+12. REGION            .. Required        ..   The region of the world where the event took place
+13. COUNTRY           ..                 ..   The country in which the event took place
+14. ADMIN1            ..                 ..   The largest sub-national administrative region in which the event took place
+15. ADMIN2            ..                 ..   The second largest sub-national administrative region in which the event took place
+16. ADMIN3            ..                 ..   The third largest sub-national administrative region in which the event took place
+17. LOCATION          .. Required        ..   The location in which the event took place
+18. LATITUDE          .. Required        ..   The latitude of the location
+19. LONGITUDE         .. Required        ..   The longitude of the location
+20. SOURCE            .. Required        ..   The source of the reporting.
+21. NOTES             .. Required        ..   The report notes added by the analysis or original reporting source.
+22. FATALITIES        .. Required OR 0   ..   The fatalities inflicted by the event.
+23. IMPORT_DATE       .. Autogenerated   ..   The date the report was added.
 ```
