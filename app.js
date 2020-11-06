@@ -54,8 +54,9 @@ app.get("/login", (req, res, next) => {
 // POST
 app.post("/login", (req, res) => {
   dbHelpers.getUsername(req.body.username).then((userObj) => {
+    console.log(userObj);
     if (Number(req.body.pin) === userObj[0].user_pin) {
-      res.cookie("analyst_id", userObj[0].user_name);
+      res.cookie("analyst_id", userObj[0].user_code);
       res.redirect("main");
     } else {
       res.render("login", { error: "Invalid Credentials" });

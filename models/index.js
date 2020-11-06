@@ -134,7 +134,7 @@ module.exports = (db) => {
   // M A N A G E   U S E R S
   const getUsername = (user) => {
     const query = {
-      text: `SELECT * FROM users WHERE user_name = '${user}'`,
+      text: `SELECT * FROM users WHERE user_code = '${user}'`,
     };
     return db
       .query(query)

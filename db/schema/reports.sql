@@ -22,7 +22,7 @@ CREATE TABLE reports (
   longitude FLOAT NOT NULL,
   source TEXT NOT NULL,
   notes TEXT NOT NULL,
-  fatalities INTEGER NOT NULL,
+  fatalities INTEGER NOT NULL DEFAULT 0,
   import_date TIMESTAMP DEFAULT NOW(),
   UNIQUE (api_event_id, api_name)
 );

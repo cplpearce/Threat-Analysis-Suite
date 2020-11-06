@@ -24,5 +24,8 @@
   },
   "organization": {
     "name": "TAS-Demo"
+  },
+  "offline-tiles": {
+    "enabled": false
   }
 }
