@@ -25,6 +25,14 @@ Server setup is as follows:
 - Run `npm i` to install all the required dependencies.
 - Run `npm run db:reset` to reset the database with your user accounts and a template for your reports.
 - Run `node app.js` to begin running the server on port 3005.
+- Create a `.env` file in the application folder and set your database, your user, and password like so:
+```
+  DB_HOST=localhost
+  DB_USER=reports
+  DB_PASS=reports
+  DB_NAME=reports
+  DB_PORT=5432
+```
 - *If running offline* Collect MBTiles geospatial tiles of your target operations area and ammend the JSON setup file to read from your offline store.
 
 ### Further Development
